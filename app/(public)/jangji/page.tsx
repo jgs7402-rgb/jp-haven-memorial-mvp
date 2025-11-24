@@ -1,7 +1,7 @@
 import { JangjiSection } from '@/components/public/JangjiSection';
 
 // Mock 데이터 타입 정의
-type Cemetery = {
+export type Cemetery = {
   id: number;
   region: 'Bắc' | 'Trung' | 'Nam';
   name: string;

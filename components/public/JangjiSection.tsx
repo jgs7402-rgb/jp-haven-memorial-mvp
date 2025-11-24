@@ -3,20 +3,9 @@
 import { useState } from 'react';
 import { JangjiMap } from './JangjiMap';
 import { JangjiList } from './JangjiList';
+import type { Cemetery } from '@/app/(public)/jangji/page';
 
 type Region = 'Bắc' | 'Trung' | 'Nam';
-
-type Cemetery = {
-  id: number;
-  region: Region;
-  name: string;
-  type: string;
-  address: string;
-  mainImage: string;
-  images: string[];
-  pros: string;
-  cons: string;
-};
 
 type JangjiSectionProps = {
   cemeteries: Cemetery[];
