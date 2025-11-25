@@ -1,4 +1,48 @@
 import { InquiryForm } from '@/components/public/InquiryForm';
+import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
+
+const testimonials = [
+  {
+    quote:
+      'Gia đình tôi được hỗ trợ rất tận tình, biết trước chi phí nên đỡ lo lắng.',
+    meta: 'Con trai, 35 tuổi · TP.HCM',
+  },
+  {
+    quote:
+      'Tư vấn rõ ràng, có so sánh giữa các nghĩa trang nên quyết định nhanh hơn.',
+    meta: 'Em gái, 29 tuổi · Hà Nội',
+  },
+  {
+    quote:
+      'Dịch vụ chuyên nghiệp, người Hàn vận hành nên cảm giác tin cậy.',
+    meta: 'Bạn bè, 32 tuổi · Đà Nẵng',
+  },
+  {
+    quote:
+      'Có hotline hỗ trợ giờ hành chính, mọi thắc mắc đều được giải đáp.',
+    meta: 'Người thân, 41 tuổi · Bình Dương',
+  },
+  {
+    quote:
+      'Biết trước ngân sách và khu vực phù hợp nên không tốn nhiều thời gian.',
+    meta: 'Cháu gái, 27 tuổi · Huế',
+  },
+  {
+    quote:
+      'Trang web đơn giản, dễ để lại thông tin và nhận tư vấn nhanh.',
+    meta: 'Con trai, 38 tuổi · Cần Thơ',
+  },
+  {
+    quote:
+      'Có so sánh ưu/nhược điểm từng nghĩa trang, giúp gia đình lựa chọn minh bạch.',
+    meta: 'Anh họ, 36 tuổi · Hải Phòng',
+  },
+  {
+    quote:
+      'Phục vụ thân thiện, hỗ trợ cả tiếng Hàn và tiếng Việt.',
+    meta: 'Bạn bè, 34 tuổi · TP.HCM',
+  },
+];
 
 export default function HomePage() {
   return (
@@ -87,22 +131,20 @@ export default function HomePage() {
       {/* ========================= */}
       {/* 후기 섹션 */}
       {/* ========================= */}
-      <section className="container mx-auto py-12">
-        <h2 className="text-2xl font-bold mb-6">Khách hàng nói gì</h2>
-        <div className="grid grid-cols-3 gap-6">
-          {/* 후기 카드 placeholder */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <p className="text-gray-700 mb-4">후기 내용...</p>
-            <p className="text-sm text-gray-500">Con trai, 35 tuổi · TP.HCM</p>
+      <section className="bg-white py-12 shadow-soft">
+        <div className="container space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold">Khách hàng nói gì</h2>
+              <p className="text-muted text-sm">
+                Carousel 8 후기 중 3개씩 보여주는 구조(자동 슬라이드 예정).
+              </p>
+            </div>
+            <div className="text-xs text-muted">Tự động trượt mỗi 4 giây (mock)</div>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <p className="text-gray-700 mb-4">후기 내용...</p>
-            <p className="text-sm text-gray-500">Con trai, 35 tuổi · TP.HCM</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <p className="text-gray-700 mb-4">후기 내용...</p>
-            <p className="text-sm text-gray-500">Con trai, 35 tuổi · TP.HCM</p>
-          </div>
+
+          {/* 캐러셀 컴포넌트 */}
+          <TestimonialsCarousel items={testimonials} />
         </div>
       </section>
 
