@@ -1,7 +1,16 @@
-// TODO: 실제 Supabase 클라이언트 생성 로직을 연결해야 함.
-// 지금은 Server Action에서 import 경로를 만족시키기 위한 최소 mock입니다.
-export const supabaseServer = {
-  from: (_table: string) => ({
-    insert: async (_payload: unknown) => ({ error: null as unknown }),
-  }),
-};
+// src/lib/supabase/server.ts
+import { createClient } from '@supabase/supabase-js';
+
+
+const supabaseUrl = 'https://mgqnadogbqjmemzneprt.supabase.co'; 
+const serviceRoleKey = 'sb_secret_EA1KZomeB2imR4-4cIhjPQ_W7pBdNID';    // service_role key
+
+console.log('[supabaseServer] url:', supabaseUrl);
+console.log('[supabaseServer] service role key exists:', !!serviceRoleKey);
+
+export const supabaseServer = createClient(supabaseUrl, serviceRoleKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+});

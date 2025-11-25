@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import { JangjiMap } from './JangjiMap';
 import { JangjiList } from './JangjiList';
-import type { Cemetery } from '@/app/(public)/jangji/page';
-
-type Region = 'Bắc' | 'Trung' | 'Nam';
+import type { Cemetery, Region } from '@/src/lib/cemeteries';
 
 type JangjiSectionProps = {
   cemeteries: Cemetery[];
@@ -65,3 +63,4 @@ export function JangjiSection({ cemeteries }: JangjiSectionProps) {
     </section>
   );
 }
+

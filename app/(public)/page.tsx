@@ -1,3 +1,7 @@
+console.log('[RUNTIME CHECK] typeof window =', typeof window);
+console.log('[RUNTIME CHECK] process.versions =', process.versions);
+console.log('[RUNTIME CHECK] process.release =', process.release);
+
 import { InquiryForm } from '@/components/public/InquiryForm';
 import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
 

@@ -64,6 +64,27 @@
   - 장지 데이터 관리 (북/중/남 18개 샘플 포함)  
   - 한국어/베트남어 필드 동시 표시 + 자동 번역 버튼
 
+#### Admin – 장지 데이터 관리 (향후 확장 계획)
+
+- 현재:
+  - `/admin/jangji` 에서 Supabase `cemeteries` 데이터를 읽어서
+    북/중/남 장지 카드 목록을 보여준다.
+  - KO/VI 필드, 유형, 지역 등을 카드 형식으로 확인 가능.
+- 향후 기능:
+  - `/admin/jangji/new`에서 장지 등록 페이지 제공
+    - 필드 예시:
+      - region (`Bắc` / `Trung` / `Nam`)
+      - name_ko / name_vi
+      - type_code (납골당/공원묘지/수목원/사찰/기타)
+      - address_vi
+      - pros_ko / pros_vi
+      - extra_info_ko / extra_info_vi
+      - lat, lng (지도용 좌표)
+      - is_active (노출 여부)
+    - 등록 성공 시 `/admin/jangji`로 이동.
+  - 이후 필요 시 `/admin/jangji/[id]/edit` 편집 기능 및 삭제 기능 추가 예정.
+
+
 - `/admin/hotline`  
   - Hotline/운영시간/Zalo 설정  
   - 베트남어/한국어 안내 문구 필드

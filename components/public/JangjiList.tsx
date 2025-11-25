@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Cemetery } from '@/app/(public)/jangji/page';
+import type { Cemetery } from '@/src/lib/cemeteries';
 
 type JangjiListProps = {
   cemeteries: Cemetery[];
@@ -38,7 +38,9 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
               </div>
   
               {/* 장지 이름 */}
-              <h3 className="text-xl font-semibold mb-2">{cemetery.name}</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                {cemetery.nameVi || cemetery.nameKo}
+              </h3>
   
               {/* 지역 */}
               <p className="text-sm text-gray-600 mb-2">
@@ -48,28 +50,28 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
               {/* 장지 종류 */}
               <div className="mb-3">
                 <span className="inline-block px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-sm font-medium">
-                  {cemetery.type}
+                  {cemetery.typeCode}
                 </span>
               </div>
   
               {/* 주소 */}
               <p className="text-gray-600 mb-4">
-                <span className="font-medium">Địa chỉ:</span> {cemetery.address}
+                <span className="font-medium">Địa chỉ:</span> {cemetery.addressVi}
               </p>
   
               {/* 장점 / 부가 설명 */}
               <div className="space-y-2 text-sm">
-                {cemetery.pros && (
+                {cemetery.prosVi && (
                   <div>
                     <span className="font-medium text-green-700">✓ 장점:</span>{' '}
-                    <span className="text-gray-700">{cemetery.pros}</span>
+                    <span className="text-gray-700">{cemetery.prosVi}</span>
                   </div>
                 )}
-                {cemetery.extraInfo && (
+                {cemetery.extraInfoVi && (
                   <div>
                     {/* cons를 "부가 설명"으로 쓰는 버전 */}
                     <span className="font-medium text-sky-700">ℹ 부가 설명:</span>{' '}
-                    <span className="text-gray-700">{cemetery.extraInfo}</span>
+                    <span className="text-gray-700">{cemetery.extraInfoVi}</span>
                   </div>
                 )}
               </div>
