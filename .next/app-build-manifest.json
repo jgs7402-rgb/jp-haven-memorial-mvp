@@ -5,20 +5,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/global-error.js"
     ],
-    "/(public)/jangji/page": [
+    "/(admin)/admin/jangji/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/jangji/page.js"
+      "static/chunks/app/(admin)/admin/jangji/page.js"
     ],
-    "/(public)/layout": [
+    "/(admin)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/layout.js"
-    ],
-    "/(public)/error": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/error.js"
+      "static/chunks/app/(admin)/layout.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -36,20 +31,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/(admin)/admin/jangji/page": [
+    "/(public)/jangji/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(admin)/admin/jangji/page.js"
+      "static/chunks/app/(public)/jangji/page.js"
     ],
-    "/(admin)/layout": [
+    "/(public)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(admin)/layout.js"
+      "static/chunks/app/(public)/layout.js"
     ],
-    "/(admin)/admin/inquiries/page": [
+    "/(public)/error": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(admin)/admin/inquiries/page.js"
+      "static/chunks/app/(public)/error.js"
     ]
   }
 }

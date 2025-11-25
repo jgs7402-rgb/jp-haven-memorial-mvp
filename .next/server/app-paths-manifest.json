@@ -1,5 +1,4 @@
 {
-  "/(admin)/admin/jangji/page": "app/(admin)/admin/jangji/page.js",
-  "/(admin)/admin/inquiries/page": "app/(admin)/admin/inquiries/page.js",
-  "/(public)/jangji/page": "app/(public)/jangji/page.js"
+  "/(public)/jangji/page": "app/(public)/jangji/page.js",
+  "/(admin)/admin/jangji/page": "app/(admin)/admin/jangji/page.js"
 }

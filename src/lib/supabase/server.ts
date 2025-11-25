@@ -8,6 +8,10 @@ const serviceRoleKey = 'sb_secret_EA1KZomeB2imR4-4cIhjPQ_W7pBdNID';    // servic
 console.log('[supabaseServer] url:', supabaseUrl);
 console.log('[supabaseServer] service role key exists:', !!serviceRoleKey);
 
+if (!supabaseUrl || !serviceRoleKey) {
+  throw new Error('Supabase env not configured');
+}
+
 export const supabaseServer = createClient(supabaseUrl, serviceRoleKey, {
   auth: {
     autoRefreshToken: false,
