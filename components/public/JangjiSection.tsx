@@ -65,4 +65,3 @@ export function JangjiSection({ cemeteries }: JangjiSectionProps) {
     </section>
   );
 }
-
