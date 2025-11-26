@@ -14,7 +14,7 @@ export function JangjiMap({ region, onRegionChange }: JangjiMapProps) {
         <h2 className="text-xl font-semibold mb-4">Bản đồ Việt Nam</h2>
         
         {/* SVG 지도 placeholder */}
-        <div className="w-full aspect-square bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center mb-4">
+        <div className="w-full aspect-[16/9] bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center mb-4">
           <p className="text-gray-500 text-sm">지도 placeholder</p>
         </div>
 
@@ -55,4 +55,3 @@ export function JangjiMap({ region, onRegionChange }: JangjiMapProps) {
     </div>
   );
 }
-

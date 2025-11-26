@@ -8,7 +8,7 @@ export type Cemetery = {
   region: Region;
   nameKo: string;
   nameVi: string;
-  typeCode: string;
+  typeCode: 'park' | 'columbarium' | 'forest' | 'temple' | 'other';
   addressVi: string;
   prosKo: string;
   prosVi: string;
@@ -25,7 +25,7 @@ function mapRowToCemetery(row: any): Cemetery {
     region: row.region as Region,
     nameKo: row.name_ko ?? '',
     nameVi: row.name_vi ?? '',
-    typeCode: row.type_code ?? '',
+    typeCode: (row.type_code as Cemetery['typeCode']) ?? 'other',
     addressVi: row.address_vi ?? '',
     prosKo: row.pros_ko ?? '',
     prosVi: row.pros_vi ?? '',
@@ -38,26 +38,52 @@ function mapRowToCemetery(row: any): Cemetery {
 }
 
 export async function fetchCemeteries(): Promise<Cemetery[]> {
-  const { data, error } = await supabaseServer
-    .from('cemeteries')
-    .select('*')
-    .eq('is_active', true)
-    .order('region', { ascending: true })
-    .order('name_vi', { ascending: true });
+  try {
+    const { data, error } = await supabaseServer
+      .from('cemeteries')
+      .select('*')
+      .eq('is_active', true)
+      .order('region', { ascending: true })
+      .order('name_vi', { ascending: true });
 
-  console.log('---------------- fetchCemeteries ----------------');
-  console.log('[fetchCemeteries] FULL ERROR =', JSON.stringify(error, null, 2));
-  console.log('[fetchCemeteries] error =', error);
-  console.log('[fetchCemeteries] data =', data);
+    console.log('---------------- fetchCemeteries ----------------');
+    console.log('[fetchCemeteries] FULL ERROR =', JSON.stringify(error, null, 2));
+    console.log('[fetchCemeteries] error =', error);
+    console.log('[fetchCemeteries] data =', data);
 
-  if (error) {
+    if (error || !data) {
+      return [];
+    }
+
+    console.log('[fetchCemeteries] rows:', data.length);
+    return data.map(mapRowToCemetery);
+  } catch (err) {
+    console.error('[fetchCemeteries] unexpected error', err);
     return [];
   }
+}
 
-  if (!data) {
-    return [];
+export async function fetchCemeteryById(id: number): Promise<Cemetery | null> {
+  try {
+    const { data, error } = await supabaseServer
+      .from('cemeteries')
+      .select('*')
+      .eq('id', id)
+      .eq('is_active', true)
+      .maybeSingle();
+
+    console.log('---------------- fetchCemeteryById ----------------');
+    console.log('[fetchCemeteryById] id =', id);
+    console.log('[fetchCemeteryById] error =', error);
+    console.log('[fetchCemeteryById] data =', data);
+
+    if (error || !data) {
+      return null;
+    }
+
+    return mapRowToCemetery(data);
+  } catch (err) {
+    console.error('[fetchCemeteryById] unexpected error', err);
+    return null;
   }
-
-  console.log('[fetchCemeteries] rows:', data.length);
-  return data.map(mapRowToCemetery);
 }

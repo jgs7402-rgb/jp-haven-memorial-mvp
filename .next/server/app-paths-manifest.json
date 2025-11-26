@@ -1,4 +1,4 @@
 {
-  "/(admin)/admin/jangji/page": "app/(admin)/admin/jangji/page.js",
-  "/(public)/jangji/page": "app/(public)/jangji/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js"
 }

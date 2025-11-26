@@ -15,52 +15,36 @@ export function JangjiSection({ cemeteries }: JangjiSectionProps) {
   const filtered = cemeteries.filter((c) => c.region === region);
 
   return (
-    <section className="container space-y-12 py-10">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Thông tin nghĩa trang</h1>
-        <p className="text-lg text-gray-600">
-          Chọn khu vực để xem danh sách nghĩa trang
-        </p>
-      </div>
+    <section className="space-y-10 py-10">
+      {/* 메인 페이지와 동일한 헤더 레이아웃 */}
+      <header className="container mx-auto py-4">
+        <div className="flex items-center justify-between">
+          <div className="text-xl font-bold">JP Haven Memorial</div>
+          <nav className="flex gap-6">
+            <a href="/">Trang chủ</a>
+            <a href="/jangji">장지 안내</a>
+            <a href="/company">회사 소개</a>
+          </nav>
+          <div className="text-sm">Hotline: 0xx xxx xxxx</div>
+        </div>
+      </header>
 
-      <div className="flex flex-wrap gap-3 justify-center">
-        <button
-          onClick={() => setRegion('Bắc')}
-          className={`px-6 py-2 rounded-lg transition-colors ${
-            region === 'Bắc'
-              ? 'bg-sky-600 text-white'
-              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-          }`}
-        >
-          Bắc (북부)
-        </button>
-        <button
-          onClick={() => setRegion('Trung')}
-          className={`px-6 py-2 rounded-lg transition-colors ${
-            region === 'Trung'
-              ? 'bg-sky-600 text-white'
-              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-          }`}
-        >
-          Trung (중부)
-        </button>
-        <button
-          onClick={() => setRegion('Nam')}
-          className={`px-6 py-2 rounded-lg transition-colors ${
-            region === 'Nam'
-              ? 'bg-sky-600 text-white'
-              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-          }`}
-        >
-          Nam (남부)
-        </button>
-      </div>
+      <div className="container mx-auto space-y-10">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Thông tin nghĩa trang</h1>
+          <p className="text-lg text-gray-600">
+            Chọn khu vực để xem danh sách nghĩa trang
+          </p>
+        </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        <JangjiMap region={region} onRegionChange={setRegion} />
+        {/* 지도 + 지역 카테고리 통합 영역 */}
+        <div className="mx-auto w-full max-w-[820px] px-4">
+          <JangjiMap region={region} onRegionChange={setRegion} />
+        </div>
+
+        {/* 카드 리스트 */}
         <JangjiList cemeteries={filtered} />
       </div>
     </section>
   );
 }
-
