@@ -96,16 +96,23 @@ export function JangjiRegionSlider({
               data-region-card
               aria-pressed={isActive}
               onClick={() => onRegionChange(item.id)}
-              className={`snap-start shrink-0 min-w-[180px] md:min-w-[220px] rounded-xl border transition duration-200 text-left ${
+              className={`snap-start shrink-0 min-w-[180px] sm:min-w-[220px] md:min-w-[260px] rounded-xl border transition duration-200 text-left px-3 py-2 sm:px-4 sm:py-3 ${
                 isActive
                   ? 'bg-sky-600 text-white border-sky-600 shadow-xl scale-[1.02]'
                   : 'bg-white text-gray-700 border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md'
               }`}
             >
-              <div className="flex flex-col gap-1 px-5 py-4">
-                <span className="text-lg font-semibold">{item.labelVi}</span>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-semibold text-sm sm:text-base">
+                    {item.labelVi}
+                  </span>
+                  <span className="text-[11px] sm:text-xs opacity-80">
+                    {isActive ? 'Đang chọn' : 'Chạm để chọn'}
+                  </span>
+                </div>
                 <span
-                  className={`text-sm ${
+                  className={`text-[11px] sm:text-xs ${
                     isActive ? 'text-white/90' : 'text-gray-500'
                   }`}
                 >

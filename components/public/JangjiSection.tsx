@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { JangjiList } from './JangjiList';
 import { JangjiRegionSlider } from './JangjiRegionSlider';
+import { SiteHeader } from '@/components/public/SiteHeader';
 import type { Cemetery, Region } from '@/src/lib/cemeteries';
 
 type JangjiSectionProps = {
@@ -17,19 +17,7 @@ export function JangjiSection({ cemeteries }: JangjiSectionProps) {
 
   return (
     <>
-      <header className="container mx-auto py-4">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
-            JP Haven Memorial
-          </Link>
-          <nav className="flex gap-6">
-            <a href="/">Trang chủ</a>
-            <a href="/jangji">Nghĩa trang</a>
-            <a href="/company">Giới thiệu công ty</a>
-          </nav>
-          <div className="text-sm">Hotline: 0xx xxx xxxx</div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section className="pt-12 pb-16 md:pt-16 md:pb-20">
         <div className="container mx-auto space-y-10">

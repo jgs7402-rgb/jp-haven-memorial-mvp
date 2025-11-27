@@ -4,6 +4,7 @@ console.log('[RUNTIME CHECK] process.release =', process.release);
 
 import { getRegionHeroImage } from '@/components/public/jangjiImages';
 import { InquiryForm } from '@/components/public/InquiryForm';
+import { SiteHeader } from '@/components/public/SiteHeader';
 import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
 import type { Region } from '@/src/lib/cemeteries';
 
@@ -53,58 +54,50 @@ const testimonials = [
 export default function HomePage() {
   return (
     <main>
-      {/* 헤더 */}
-      <header className="container mx-auto py-4">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold">JP Haven Memorial</div>
-          <nav className="flex gap-6">
-            <a href="/jangji">Nghĩa trang</a>
-            <a href="/company">Giới thiệu công ty</a>
-          </nav>
-          <div className="text-sm">Hotline: 0xx xxx xxxx</div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* ========================= */}
       {/* Hero 섹션 */}
       {/* ========================= */}
-      <section className="container mx-auto pt-12 pb-16 md:pt-16 md:pb-20 text-center">
-        <h1 className="text-4xl font-bold mb-4">
-          Chọn nơi an nghỉ cuối cùng một cách bình tĩnh và minh bạch.
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Dịch vụ tư vấn do người Hàn Quốc vận hành, hỗ trợ gia đình Việt Nam
-          hiểu rõ chi phí và lựa chọn trước khi ra nghĩa trang.
-        </p>
-        <div className="flex gap-4 justify-center">
-          <a
-            href="tel:0xxxxxxxxx"
-            className="px-6 py-3 bg-sky-600 text-white rounded-lg"
-          >
-            Gọi tư vấn ngay
-          </a>
-          <a
-            href="#inquiry"
-            className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
-          >
-            Để lại thông tin tư vấn
-          </a>
-          <a
-            href="#"
-            className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
-          >
-            Chat qua Zalo
-          </a>
+      <section className="container mx-auto pt-12 pb-16 md:pt-16 md:pb-20">
+        <div className="max-w-md md:max-w-2xl mx-auto text-center space-y-6">
+          <h1 className="text-4xl font-bold">
+            Chọn nơi an nghỉ cuối cùng một cách bình tĩnh và minh bạch.
+          </h1>
+          <p className="text-lg text-gray-600">
+            Dịch vụ tư vấn do người Hàn Quốc vận hành, hỗ trợ gia đình Việt Nam
+            hiểu rõ chi phí và lựa chọn trước khi ra nghĩa trang.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <a
+              href="tel:0xxxxxxxxx"
+              className="px-6 py-3 bg-sky-600 text-white rounded-lg"
+            >
+              Gọi tư vấn ngay
+            </a>
+            <a
+              href="#inquiry"
+              className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
+            >
+              Để lại thông tin tư vấn
+            </a>
+            <a
+              href="#"
+              className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
+            >
+              Chat qua Zalo
+            </a>
+          </div>
+          <p className="text-sm text-gray-500">
+            Hotline: 0xx xxx xxxx · 08:00 – 21:00 (Giờ Việt Nam)
+          </p>
         </div>
-        <p className="text-sm text-gray-500 mt-4">
-          Hotline: 0xx xxx xxxx · 08:00 – 21:00 (Giờ Việt Nam)
-        </p>
       </section>
 
       {/* ========================= */}
       {/* 장지 티저 섹션 */}
       {/* ========================= */}
-      <section className="container mx-auto py-12">
+      <section className="container mx-auto py-12 mt-8 md:mt-10">
         <h2 className="text-2xl font-bold mb-6">Nghĩa trang nổi bật</h2>
         <FeaturedCemeteries />
         <div className="text-center">
