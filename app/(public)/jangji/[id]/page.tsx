@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { InquiryForm } from '@/components/public/InquiryForm';
+import { getJangjiImages } from '@/components/public/jangjiImages';
 import { fetchCemeteryById } from '@/src/lib/cemeteries';
 
 type PageProps = {
@@ -12,6 +13,7 @@ export default async function CemeteryDetailPage({ params }: PageProps) {
 
   const cemetery = await fetchCemeteryById(id);
   if (!cemetery) return notFound();
+  const images = getJangjiImages(id);
 
   const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
     cemetery.addressVi || cemetery.nameVi
@@ -35,19 +37,21 @@ export default async function CemeteryDetailPage({ params }: PageProps) {
       <section className="container mx-auto px-4 py-10 space-y-10">
         {/* 대표 이미지 */}
         <div className="aspect-[16/9] w-full overflow-hidden rounded-xl bg-gray-200">
-          <div className="h-full w-full bg-gray-200 flex items-center justify-center text-gray-500">
-            대표 이미지 placeholder
-          </div>
+          <img
+            src={images.main}
+            alt={cemetery.nameVi || cemetery.nameKo}
+            className="h-full w-full object-cover"
+          />
         </div>
 
         {/* 추가 이미지 갤러리 (3열) */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, idx) => (
+          {images.extras.map((url, idx) => (
             <div
               key={idx}
               className="aspect-video w-full rounded-lg bg-gray-200 flex items-center justify-center text-gray-500"
             >
-              추가 이미지 {idx + 1}
+              <img src={url} alt={`${cemetery.nameVi} 추가 이미지 ${idx + 1}`} className="h-full w-full object-cover rounded-lg" />
             </div>
           ))}
         </div>
