@@ -1,5 +1,3 @@
 {
-  "/page": "app/page.js",
-  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js",
   "/(public)/jangji/page": "app/(public)/jangji/page.js"
 }

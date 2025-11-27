@@ -6,7 +6,6 @@ export type Region = 'Bắc' | 'Trung' | 'Nam';
 export type Cemetery = {
   id: number;
   region: Region;
-  nameKo: string;
   nameVi: string;
   typeCode: 'park' | 'columbarium' | 'forest' | 'temple' | 'other';
   addressVi: string;
@@ -23,7 +22,6 @@ function mapRowToCemetery(row: any): Cemetery {
   return {
     id: row.id,
     region: row.region as Region,
-    nameKo: row.name_ko ?? '',
     nameVi: row.name_vi ?? '',
     typeCode: (row.type_code as Cemetery['typeCode']) ?? 'other',
     addressVi: row.address_vi ?? '',

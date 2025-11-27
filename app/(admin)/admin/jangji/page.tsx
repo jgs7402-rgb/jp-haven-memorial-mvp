@@ -40,15 +40,12 @@ export default async function AdminJangjiPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-slate-900">
-                      {cemetery.nameKo}
+                      {cemetery.nameVi}
                     </p>
                     <span className="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
                       {cemetery.region}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-600">
-                    VI: {cemetery.nameVi}
-                  </p>
                   <p className="text-xs text-slate-600">
                     유형: {cemetery.typeCode}
                   </p>

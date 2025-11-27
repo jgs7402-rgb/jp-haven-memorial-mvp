@@ -39,7 +39,7 @@ export default async function CemeteryDetailPage({ params }: PageProps) {
         <div className="aspect-[16/9] w-full overflow-hidden rounded-xl bg-gray-200">
           <img
             src={images.main}
-            alt={cemetery.nameVi || cemetery.nameKo}
+            alt={cemetery.nameVi}
             className="h-full w-full object-cover"
           />
         </div>
@@ -58,7 +58,7 @@ export default async function CemeteryDetailPage({ params }: PageProps) {
 
         {/* 기본 정보 */}
         <div className="space-y-4">
-          <h1 className="text-3xl font-bold">{cemetery.nameVi || cemetery.nameKo}</h1>
+          <h1 className="text-3xl font-bold">{cemetery.nameVi}</h1>
           <div className="flex flex-wrap gap-2">
             <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
               {cemetery.region}

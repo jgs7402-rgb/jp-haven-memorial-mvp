@@ -47,7 +47,6 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
             </div>
 
             <h3 className="text-lg font-semibold mb-1">{cemetery.nameVi}</h3>
-            <p className="text-sm text-gray-600 mb-2">{cemetery.nameKo}</p>
 
             <div className="flex items-center gap-2 mb-2">
               <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
