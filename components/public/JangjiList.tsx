@@ -39,7 +39,7 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
           >
             <div className="w-full h-48 bg-gray-100 rounded mb-4 overflow-hidden">
               <img
-                src={getJangjiImages(cemetery.id).main}
+                src={cemetery.imageUrl ?? getJangjiImages(cemetery.id).main}
                 alt={cemetery.nameVi}
                 className="h-full w-full object-cover"
                 loading="lazy"

@@ -152,7 +152,7 @@ export function JangjiMap({ region, onRegionChange }: JangjiMapProps) {
                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
             }`}
           >
-            <span className="font-medium">Bắc (북부)</span>
+            <span className="font-medium">Miền Bắc</span>
           </button>
           <button
             onClick={() => onRegionChange('Trung')}
@@ -162,7 +162,7 @@ export function JangjiMap({ region, onRegionChange }: JangjiMapProps) {
                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
             }`}
           >
-            <span className="font-medium">Trung (중부)</span>
+            <span className="font-medium">Miền Trung</span>
           </button>
           <button
             onClick={() => onRegionChange('Nam')}
@@ -172,7 +172,7 @@ export function JangjiMap({ region, onRegionChange }: JangjiMapProps) {
                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
             }`}
           >
-            <span className="font-medium">Nam (남부)</span>
+            <span className="font-medium">Miền Nam</span>
           </button>
         </div>
       </div>
