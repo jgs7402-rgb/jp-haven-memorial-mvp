@@ -7,7 +7,7 @@ import { useState } from 'react';
 const navItems = [
   { href: '/admin', label: 'Dashboard' },
   { href: '/admin/inquiries', label: '문의 관리' },
-  { href: '/admin/jangji', label: '장지 데이터' },
+  { href: '/admin/cemeteries', label: '장지 데이터' },
   { href: '/admin/hotline', label: 'Hotline 설정' },
   { href: '/admin/homepage-images', label: '메인 이미지' },
 ];

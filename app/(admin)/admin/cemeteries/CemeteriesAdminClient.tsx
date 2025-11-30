@@ -1,15 +1,70 @@
 'use client';
 
 import { useState } from 'react';
-import type { Cemetery, Region } from '@/src/lib/cemeteries';
+import type { Cemetery, CemeteryImage, Region } from '@/src/lib/cemeteries';
 
 type Props = {
   initialCemeteries: Cemetery[];
 };
 
+type ExtraImageForm = {
+  id?: number;
+  imageUrl: string;
+  sortOrder: number | null;
+  isMain: boolean;
+};
+
 export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
   const [rows, setRows] = useState(initialCemeteries);
   const [savingId, setSavingId] = useState<number | null>(null);
+  const [extraImages, setExtraImages] = useState<
+    Record<number, ExtraImageForm[]>
+  >(() => {
+    const initial: Record<number, ExtraImageForm[]> = {};
+    for (const c of initialCemeteries) {
+      if (c.images && c.images.length > 0) {
+        initial[c.id] = c.images.map((img: CemeteryImage) => ({
+          id: img.id,
+          imageUrl: img.imageUrl,
+          sortOrder: img.sortOrder,
+          isMain: img.isMain,
+        }));
+      }
+    }
+    return initial;
+  });
+
+  const handleAddImageRow = (cemeteryId: number) => {
+    setExtraImages((prev) => ({
+      ...prev,
+      [cemeteryId]: [
+        ...(prev[cemeteryId] ?? []),
+        { imageUrl: '', sortOrder: null, isMain: false },
+      ],
+    }));
+  };
+
+  const handleRemoveImageRow = (cemeteryId: number, index: number) => {
+    setExtraImages((prev) => {
+      const list = prev[cemeteryId] ?? [];
+      return { ...prev, [cemeteryId]: list.filter((_, i) => i !== index) };
+    });
+  };
+
+  const handleChangeImageRow = (
+    cemeteryId: number,
+    index: number,
+    field: keyof ExtraImageForm,
+    value: string | number | boolean | null,
+  ) => {
+    setExtraImages((prev) => {
+      const list = prev[cemeteryId] ?? [];
+      const updated = list.map((row, i) =>
+        i === index ? { ...row, [field]: value } : row,
+      );
+      return { ...prev, [cemeteryId]: updated };
+    });
+  };
 
   async function handleSave(id: number, form: HTMLFormElement) {
     const formData = new FormData(form);
@@ -54,6 +109,31 @@ export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
         console.error('Save failed', json);
         alert('저장에 실패했습니다. 콘솔을 확인하세요.');
         return;
+      }
+
+      // 추가 이미지 저장
+      const extra = extraImages[id] ?? [];
+      const imagesPayload = extra
+        .filter((img) => img.imageUrl.trim() !== '')
+        .map((img) => ({
+          imageUrl: img.imageUrl.trim(),
+          sortOrder: img.sortOrder,
+          isMain: img.isMain,
+        }));
+
+      const resImages = await fetch('/api/admin/cemetery-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cemeteryId: id,
+          images: imagesPayload,
+        }),
+      });
+
+      const jsonImages = await resImages.json();
+      if (!resImages.ok || !jsonImages.ok) {
+        console.error('Save extra images failed', jsonImages);
+        alert('부가 이미지를 저장하는 중 오류가 발생했습니다.');
       }
 
       setRows((prev) =>
@@ -221,6 +301,110 @@ export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
                   {savingId === cemetery.id ? '저장 중...' : '저장'}
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* 부가 이미지 관리 섹션 */}
+          <div className="mt-3 space-y-2 border-t border-slate-200 pt-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-slate-700">
+                부가 이미지 (cemetery_image)
+              </span>
+              <button
+                type="button"
+                className="rounded-md border border-slate-300 px-2 py-1 text-xs hover:bg-slate-50"
+                onClick={() => handleAddImageRow(cemetery.id)}
+              >
+                + 이미지 추가
+              </button>
+            </div>
+
+            {(extraImages[cemetery.id] ?? []).length === 0 && (
+              <p className="text-xs text-slate-500">
+                부가 이미지가 없습니다. 이미지를 추가해 주세요.
+              </p>
+            )}
+
+            <div className="space-y-2">
+              {(extraImages[cemetery.id] ?? []).map((img, idx) => (
+                <div
+                  key={`${cemetery.id}-extra-${idx}-${img.id ?? 'new'}`}
+                  className="flex flex-col gap-2 rounded-md border border-slate-200 p-3 text-xs"
+                >
+                  <div className="grid gap-2 md:grid-cols-[1fr_auto_auto_auto] md:items-center">
+                    <label className="space-y-1">
+                      <span className="text-slate-600">이미지 URL</span>
+                      <input
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                        value={img.imageUrl}
+                        onChange={(e) =>
+                          handleChangeImageRow(
+                            cemetery.id,
+                            idx,
+                            'imageUrl',
+                            e.target.value,
+                          )
+                        }
+                        placeholder="https://... (image_url)"
+                      />
+                    </label>
+
+                    <label className="space-y-1">
+                      <span className="text-slate-600">정렬</span>
+                      <input
+                        type="number"
+                        className="w-24 rounded-md border border-slate-300 px-2 py-1 text-sm"
+                        value={img.sortOrder ?? ''}
+                        onChange={(e) =>
+                          handleChangeImageRow(
+                            cemetery.id,
+                            idx,
+                            'sortOrder',
+                            e.target.value === '' ? null : Number(e.target.value),
+                          )
+                        }
+                        placeholder="예: 1"
+                      />
+                    </label>
+
+                    <label className="inline-flex items-center gap-2 text-slate-700">
+                      <input
+                        type="checkbox"
+                        checked={img.isMain}
+                        onChange={(e) =>
+                          handleChangeImageRow(
+                            cemetery.id,
+                            idx,
+                            'isMain',
+                            e.target.checked,
+                          )
+                        }
+                      />
+                      <span>대표</span>
+                    </label>
+
+                    <div className="flex items-center justify-end md:justify-start">
+                      <button
+                        type="button"
+                        className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600 hover:bg-red-50"
+                        onClick={() => handleRemoveImageRow(cemetery.id, idx)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+
+                  {img.imageUrl && (
+                    <div className="h-24 w-full overflow-hidden rounded-md border border-slate-200 bg-slate-50">
+                      <img
+                        src={img.imageUrl}
+                        alt={`preview-${idx}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </form>

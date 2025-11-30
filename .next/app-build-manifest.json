@@ -5,10 +5,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/global-error.js"
     ],
-    "/(public)/jangji/[id]/page": [
+    "/(public)/jangji/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/jangji/[id]/page.js"
+      "static/chunks/app/(public)/jangji/page.js"
     ],
     "/(public)/layout": [
       "static/chunks/webpack.js",
@@ -35,6 +35,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
+    ],
+    "/(public)/jangji/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/jangji/[id]/page.js"
     ]
   }
 }
