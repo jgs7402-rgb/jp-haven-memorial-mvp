@@ -20,6 +20,8 @@ export type Cemetery = {
   nameVi: string;
   typeCode: string;
   addressVi: string;
+  addressShortVi?: string | null;
+  locationShortVi?: string | null;
   prosKo: string;
   prosVi: string;
   extraInfoKo: string;
@@ -28,10 +30,12 @@ export type Cemetery = {
   isFeaturedMain: boolean;
   featuredOrderMain: number | null;
   imageUrl: string | null;
+  mainImageUrl?: string | null;
   lat: number | null;
   lng: number | null;
   createdAt: string;
   updatedAt: string | null;
+  metaDescriptionVi?: string | null;
 
   // 🔹 새로 추가: 부가 이미지들
   images?: CemeteryImage[];
@@ -63,6 +67,8 @@ function mapRowToCemetery(row: any): Cemetery {
     nameVi: row.name_vi ?? '',
     typeCode: row.type_code ?? '',
     addressVi: row.address_vi ?? '',
+    addressShortVi: row.address_short_vi ?? null,
+    locationShortVi: row.location_short_vi ?? null,
     prosKo: row.pros_ko ?? '',
     prosVi: row.pros_vi ?? '',
     extraInfoKo: row.extra_info_ko ?? '',
@@ -74,10 +80,12 @@ function mapRowToCemetery(row: any): Cemetery {
         ? null
         : Number(row.featured_order_main),
     imageUrl: row.image_url ?? null,
+    mainImageUrl: row.main_image_url ?? row.image_url ?? null,
     lat: row.lat ?? null,
     lng: row.lng ?? null,
     createdAt: row.created_at ?? '',
     updatedAt: row.updated_at ?? null,
+    metaDescriptionVi: row.meta_description_vi ?? null,
 
     // images는 fetchCemeteryById에서 따로 채운다
     images: row.images as CemeteryImage[] | undefined,

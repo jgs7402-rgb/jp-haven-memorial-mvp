@@ -2,7 +2,11 @@
 
 import Link from 'next/link';
 
-function SiteHeader() {
+type SiteHeaderProps = {
+  siteName?: string;
+};
+
+function SiteHeader({ siteName = 'JP Haven Memorial' }: SiteHeaderProps) {
   return (
     <header className="w-full border-b border-transparent">
       <div className="container mx-auto flex flex-col items-center gap-3 py-4 md:py-5 px-4">
@@ -11,7 +15,7 @@ function SiteHeader() {
           href="/"
           className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center"
         >
-          JP Haven Memorial
+          {siteName}
         </Link>
 
         {/* Navigation - always visible, centered */}

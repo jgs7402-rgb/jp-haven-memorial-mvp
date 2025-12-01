@@ -6,19 +6,28 @@ import { JangjiRegionSlider } from './JangjiRegionSlider';
 import Footer from './Footer';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import type { Cemetery, Region } from '@/src/lib/cemeteries';
+import type { SiteSettings } from '@/src/lib/siteSettings';
 
 type JangjiSectionProps = {
   cemeteries: Cemetery[];
+  siteSettings: SiteSettings; // 방법 A: 필수, non-null
 };
 
-export default function JangjiSection({ cemeteries }: JangjiSectionProps) {
+export default function JangjiSection({
+  cemeteries,
+  siteSettings,
+}: JangjiSectionProps) {
   const [region, setRegion] = useState<Region>('Bắc');
 
   const filtered = cemeteries.filter((c) => c.region === region);
 
+  // siteNameVi가 비어 있으면 기본값 사용
+  const siteName = siteSettings.siteNameVi || 'JP Haven Memorial';
+
   return (
     <>
-      <SiteHeader />
+      {/* 헤더 (홈과 동일 스타일) */}
+      <SiteHeader siteName={siteName} />
 
       <section className="pt-12 pb-16 md:pt-16 md:pb-20">
         <div className="container mx-auto space-y-10">
@@ -40,7 +49,7 @@ export default function JangjiSection({ cemeteries }: JangjiSectionProps) {
       </section>
 
       {/* 푸터 (메인 페이지와 동일) */}
-      <Footer />
+      <Footer settings={siteSettings} />
     </>
   );
 }

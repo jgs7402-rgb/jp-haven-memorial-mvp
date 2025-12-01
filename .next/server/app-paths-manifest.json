@@ -1,5 +1,5 @@
 {
-  "/api/admin/cemetery-images/route": "app/api/admin/cemetery-images/route.js",
-  "/(public)/jangji/page": "app/(public)/jangji/page.js",
-  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js"
+  "/api/admin/testimonials/route": "app/api/admin/testimonials/route.js",
+  "/(admin)/admin/homepage-images/page": "app/(admin)/admin/homepage-images/page.js",
+  "/(public)/page": "app/(public)/page.js"
 }

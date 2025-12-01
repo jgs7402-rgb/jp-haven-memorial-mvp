@@ -1,14 +1,17 @@
-console.log('[RUNTIME CHECK] typeof window =', typeof window);
-console.log('[RUNTIME CHECK] process.versions =', process.versions);
-console.log('[RUNTIME CHECK] process.release =', process.release);
+// app/(public)/page.tsx
 
 import { getRegionHeroImage } from '@/components/public/jangjiImages';
 import { InquiryForm } from '@/components/public/InquiryForm';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
+import Footer from '@/components/public/Footer';
 import type { Region } from '@/src/lib/cemeteries';
+import { getSiteSettings } from '@/src/lib/siteSettings';
+import { getHomepageTestimonialsForPublic } from '@/src/lib/homepageTestimonials';
 
-const testimonials = [
+export const revalidate = 0;
+
+const FALLBACK_TESTIMONIALS = [
   {
     quote:
       'Gia đình tôi được hỗ trợ rất tận tình, biết trước chi phí nên đỡ lo lắng.',
@@ -51,45 +54,84 @@ const testimonials = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const siteSettings = await getSiteSettings();
+  const dynamicTestimonials = await getHomepageTestimonialsForPublic();
+
+  const testimonials =
+    dynamicTestimonials.length > 0
+      ? dynamicTestimonials
+      : FALLBACK_TESTIMONIALS;
+
+  const siteName = siteSettings?.siteNameVi ?? 'JP Haven Memorial';
+
+  const heroTitle =
+    siteSettings?.heroTitleVi ??
+    'Chọn nơi an nghỉ cuối cùng một cách bình tĩnh và minh bạch.';
+  const heroSubtitle =
+    siteSettings?.heroSubtitleVi ??
+    'Dịch vụ tư vấn do người Hàn Quốc vận hành, hỗ trợ gia đình Việt Nam hiểu rõ chi phí và lựa chọn trước khi ra nghĩa trang.';
+
+  const hotlineNumber = siteSettings?.hotlineNumber ?? '0xx xxx xxxx';
+  const hotlineHref = hotlineNumber
+    ? `tel:${hotlineNumber.replace(/\s+/g, '')}`
+    : '#inquiry';
+  const businessHours =
+    siteSettings?.businessHoursText ?? '08:00 – 21:00 (Giờ Việt Nam)';
+
+  const heroCtaPrimary =
+    siteSettings?.heroCtaPrimaryVi ?? 'Gọi tư vấn ngay';
+  const heroCtaSecondary =
+    siteSettings?.heroCtaSecondaryVi ?? 'Để lại thông tin tư vấn';
+  const heroCtaTertiary =
+    siteSettings?.heroCtaTertiaryVi ?? 'Chat qua Zalo';
+
+  const zaloUrl = siteSettings?.zaloUrl ?? '#';
+
   return (
     <main>
-      <SiteHeader />
+      {/* 헤더 */}
+      <SiteHeader siteName={siteName} />
 
       {/* ========================= */}
       {/* Hero 섹션 */}
       {/* ========================= */}
       <section className="container mx-auto pt-12 pb-16 md:pt-16 md:pb-20">
         <div className="max-w-md md:max-w-2xl mx-auto text-center space-y-6">
-          <h1 className="text-4xl font-bold">
-            Chọn nơi an nghỉ cuối cùng một cách bình tĩnh và minh bạch.
-          </h1>
-          <p className="text-lg text-gray-600">
-            Dịch vụ tư vấn do người Hàn Quốc vận hành, hỗ trợ gia đình Việt Nam
-            hiểu rõ chi phí và lựa chọn trước khi ra nghĩa trang.
-          </p>
+          <h1 className="text-4xl font-bold">{heroTitle}</h1>
+          <p className="text-lg text-gray-600">{heroSubtitle}</p>
+
           <div className="flex gap-4 justify-center">
-            <a
-              href="tel:0xxxxxxxxx"
-              className="px-6 py-3 bg-sky-600 text-white rounded-lg"
-            >
-              Gọi tư vấn ngay
-            </a>
-            <a
-              href="#inquiry"
-              className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
-            >
-              Để lại thông tin tư vấn
-            </a>
-            <a
-              href="#"
-              className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
-            >
-              Chat qua Zalo
-            </a>
+            {heroCtaPrimary ? (
+              <a
+                href={hotlineHref}
+                className="px-6 py-3 bg-sky-600 text-white rounded-lg"
+              >
+                {heroCtaPrimary}
+              </a>
+            ) : null}
+
+            {heroCtaSecondary ? (
+              <a
+                href="#inquiry"
+                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
+              >
+                {heroCtaSecondary}
+              </a>
+            ) : null}
+
+            {heroCtaTertiary ? (
+              <a
+                href={zaloUrl || '#'}
+                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
+              >
+                {heroCtaTertiary}
+              </a>
+            ) : null}
           </div>
+
           <p className="text-sm text-gray-500">
-            Hotline: 0xx xxx xxxx · 08:00 – 21:00 (Giờ Việt Nam)
+            Hotline: {hotlineNumber} · {businessHours}
           </p>
         </div>
       </section>
@@ -122,10 +164,11 @@ export default function HomePage() {
                 Carousel hiển thị 3/8 đánh giá (tự động trượt).
               </p>
             </div>
-            <div className="text-xs text-muted">Tự động trượt mỗi 4 giây (mock)</div>
+            <div className="text-xs text-muted">
+              Tự động trượt mỗi 4 giây (mock)
+            </div>
           </div>
 
-          {/* 캐러셀 컴포넌트 */}
           <TestimonialsCarousel items={testimonials} />
         </div>
       </section>
@@ -133,65 +176,27 @@ export default function HomePage() {
       {/* ========================= */}
       {/* 문의 섹션 */}
       {/* ========================= */}
-      <section id="inquiry" className="container grid gap-8 lg:grid-cols-2 py-12">
+      <section
+        id="inquiry"
+        className="container grid gap-8 lg:grid-cols-2 py-12"
+      >
         <div className="space-y-3">
           <p className="text-sm font-semibold text-sky-600">Liên hệ</p>
-          <h2 className="text-2xl font-bold">Để lại thông tin để được tư vấn</h2>
+          <h2 className="text-2xl font-bold">
+            Để lại thông tin để được tư vấn
+          </h2>
           <p className="text-muted text-sm">
             Thông tin sẽ được lưu vào bảng inquiries. Hiện tại là mock submit.
           </p>
         </div>
 
-        {/* 기존 form 대신에 InquiryForm 사용 */}
         <InquiryForm />
       </section>
 
       {/* ========================= */}
       {/* 푸터 섹션 */}
       {/* ========================= */}
-      <footer className="bg-gray-100 py-12 mt-20">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold mb-4">Menu</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="/jangji">Nghĩa trang</a>
-                </li>
-                <li>
-                  <a href="/company">Giới thiệu công ty</a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Liên hệ</h3>
-              <p className="text-sm">Hotline: 0xx xxx xxxx</p>
-              <p className="text-sm">Email: info@jphaven.com</p>
-              <p className="text-sm">08:00 – 21:00 (Giờ Việt Nam)</p>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Mạng xã hội</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#">Zalo</a>
-                </li>
-                <li>
-                  <a href="#">Facebook</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="text-center text-sm text-gray-600">
-            <p>Dịch vụ tư vấn do người Hàn Quốc vận hành</p>
-          </div>
-          <div className="mt-8 text-center">
-            {/* FooterBadge placeholder */}
-            <div className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded">
-              Logo chứng nhận (placeholder)
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer settings={siteSettings} />
     </main>
   );
 }
@@ -255,14 +260,20 @@ function FeaturedCemeteries() {
                 loading="lazy"
               />
             </div>
-            <h3 className="text-lg font-semibold mb-1">{cemetery.nameVi}</h3>
-            <p className="text-sm text-gray-600 mb-2">{cemetery.typeVi}</p>
+            <h3 className="text-lg font-semibold mb-1">
+              {cemetery.nameVi}
+            </h3>
+            <p className="text-sm text-gray-600 mb-2">
+              {cemetery.typeVi}
+            </p>
             <div className="flex items-center gap-2 mb-2">
               <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
                 {regionLabel(cemetery.region)}
               </span>
             </div>
-            <p className="text-xs text-gray-600">Địa chỉ: {cemetery.addressVi}</p>
+            <p className="text-xs text-gray-600">
+              Địa chỉ: {cemetery.addressVi}
+            </p>
           </div>
         ))}
       </div>
