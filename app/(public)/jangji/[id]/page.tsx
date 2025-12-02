@@ -3,19 +3,22 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { fetchCemeteryById } from '@/src/lib/cemeteries';
 import JangjiDetail from '@/components/public/JangjiDetail';
-import SiteHeader from '@/components/public/SiteHeader';
+import { SiteHeader } from '@/components/public/SiteHeader';
 import { getSiteSettings } from '@/src/lib/siteSettings';
 
 type PageProps = {
   params: { id: string };
 };
 
+// 장지 상세는 항상 최신 데이터를 보는 게 좋으니까 dynamic 유지
 export const dynamic = 'force-dynamic';
 
+// SEO / OG 메타데이터
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const id = Number(params.id);
+
   const [cemetery, settings] = await Promise.all([
     Number.isNaN(id) ? Promise.resolve(null) : fetchCemeteryById(id),
     getSiteSettings(),
@@ -28,6 +31,7 @@ export async function generateMetadata({
     settings.seoDefaultDescriptionVi ||
     'JP Haven Memorial là nền tảng trung gian kết nối dịch vụ nghĩa trang và lưu tro cốt.';
 
+  // 잘못된 id 또는 cemetery 없음 → 전역 기본 메타로 처리
   if (!cemetery) {
     return {
       title: fallbackTitle,
@@ -35,7 +39,12 @@ export async function generateMetadata({
     };
   }
 
-  const location = cemetery.locationShortVi || cemetery.addressShortVi || cemetery.addressVi || '';
+  const location =
+    cemetery.locationShortVi ||
+    cemetery.addressShortVi ||
+    cemetery.addressVi ||
+    '';
+
   const title = `${cemetery.nameVi}${
     location ? ` – ${location}` : ''
   } | ${baseSiteName}`;
@@ -52,12 +61,17 @@ export async function generateMetadata({
     settings.ogDefaultImageUrl ||
     undefined;
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
+      url: `${baseUrl}/jangji/${cemetery.id}`,
+      siteName: baseSiteName,
       images: imageUrl
         ? [
             {
@@ -85,16 +99,22 @@ export default async function JangjiDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const cemetery = await fetchCemeteryById(id);
+  // 상세 페이지 본문에서도 cemetery + siteSettings 함께 가져오기
+  const [cemetery, settings] = await Promise.all([
+    fetchCemeteryById(id),
+    getSiteSettings(),
+  ]);
 
   if (!cemetery) {
     notFound();
   }
 
+  const siteName = settings.siteNameVi || 'JP Haven Memorial';
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 space-y-8">
-      {/* 상단 공통 헤더 */}
-      <SiteHeader />
+      {/* 상단 공통 헤더 (홈과 동일 스타일) */}
+      <SiteHeader siteName={siteName} />
 
       {/* 상세 내용 */}
       <JangjiDetail cemetery={cemetery} />
