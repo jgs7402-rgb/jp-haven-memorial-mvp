@@ -35,9 +35,10 @@
   - 북부/중부/남부 탭 + SVG 지도 인터랙션 + 장지 카드 리스트
 
 - `/company`  
-  - 회사 소개 페이지  
-  - 대표 인사말 (위: 베트남어 / 아래: 영어)  
-  - 회사 철학 + 연락처
+  - 베트남어 기반 회사 소개 페이지 (소개/미션/비전/주요 서비스/문의 섹션 포함)
+  - site_settings 연동: `hotline_number`, `support_email` 값을 Supabase에서 불러와 표시
+  - 상단 “JP Haven Memorial” 클릭 시 `/`로 이동
+  - 하단 “Chuyển tới trang liên hệ” 버튼 → 공통 문의 모달(ContactModal) 팝업 → `/api/contact`로 POST
 
 ### 1.2 Admin Routes (어드민 – 한국어 UI)
 
@@ -92,6 +93,16 @@
 - `/admin/homepage-images`  
   - 메인 페이지 Hero/섹션 이미지 관리  
   - 이미지 키 + URL + alt 텍스트(KO/VI)
+
+---
+
+## 1.x Company Page (/company)
+- 역할: 베트남어 기반 회사 소개 페이지
+- 섹션: 소개, 미션, 비전, 주요 서비스, 문의 섹션
+- 데이터 연동: Supabase `site_settings` (`hotline_number`, `support_email`) 값을 불러와 Hotline/Email 표시
+- 네비게이션: 상단 “JP Haven Memorial” 클릭 시 홈(`/`) 이동
+- 문의 모달: 하단 버튼 → ContactModal 팝업 → 이름/전화/이메일/메시지 입력 → `/api/contact` POST 전송
+- 재사용성: ContactModal(`components/contact/ContactModal.tsx`)은 `isOpen`, `onClose`, `defaultEmail`, `action`(기본 `/api/contact`), `source` props로 다른 페이지에서도 재사용 가능
 
 ---
 

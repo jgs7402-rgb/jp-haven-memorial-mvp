@@ -5,7 +5,8 @@ import { InquiryForm } from '@/components/public/InquiryForm';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
 import Footer from '@/components/public/Footer';
-import type { Region } from '@/src/lib/cemeteries';
+import type { Region, Cemetery } from '@/src/lib/cemeteries';
+import { fetchFeaturedCemeteriesForHome } from '@/src/lib/cemeteries';
 import { getSiteSettings } from '@/src/lib/siteSettings';
 import { getHomepageTestimonialsForPublic } from '@/src/lib/homepageTestimonials';
 
@@ -62,6 +63,7 @@ export default async function HomePage() {
     dynamicTestimonials.length > 0
       ? dynamicTestimonials
       : FALLBACK_TESTIMONIALS;
+  const featuredCemeteries = await fetchFeaturedCemeteriesForHome();
 
   const siteName = siteSettings?.siteNameVi ?? 'JP Haven Memorial';
 
@@ -141,7 +143,7 @@ export default async function HomePage() {
       {/* ========================= */}
       <section className="container mx-auto py-12 mt-8 md:mt-10">
         <h2 className="text-2xl font-bold mb-6">Nghĩa trang nổi bật</h2>
-        <FeaturedCemeteries />
+        <FeaturedCemeteries cemeteries={featuredCemeteries} />
         <div className="text-center">
           <a
             href="/jangji"
@@ -210,44 +212,33 @@ type FeaturedCemetery = {
   image: string;
 };
 
-const FEATURED_CEMETERIES: FeaturedCemetery[] = [
-  {
-    id: 'north',
-    region: 'Bắc',
-    nameVi: 'Công viên nghĩa trang Hà Nội – Hòa Bình',
-    typeVi: 'Công viên nghĩa trang',
-    addressVi: 'Ngoại ô Hà Nội, Việt Nam',
-    image: getRegionHeroImage('Bắc'),
-  },
-  {
-    id: 'central',
-    region: 'Trung',
-    nameVi: 'Nghĩa trang biển Đà Nẵng',
-    typeVi: 'Nghĩa trang ven biển',
-    addressVi: 'Đà Nẵng, Việt Nam',
-    image: getRegionHeroImage('Trung'),
-  },
-  {
-    id: 'south',
-    region: 'Nam',
-    nameVi: 'Nghĩa trang gia đình TP.HCM',
-    typeVi: 'Nhà lưu tro cốt',
-    addressVi: 'TP. Hồ Chí Minh, Việt Nam',
-    image: getRegionHeroImage('Nam'),
-  },
-];
-
 function regionLabel(region: Region) {
   if (region === 'Bắc') return 'Miền Bắc';
   if (region === 'Trung') return 'Miền Trung';
   return 'Miền Nam';
 }
 
-function FeaturedCemeteries() {
+function FeaturedCemeteries({ cemeteries }: { cemeteries: Cemetery[] }) {
+  const items: FeaturedCemetery[] =
+    cemeteries.length > 0
+      ? cemeteries.map((c) => ({
+          id: String(c.id),
+          region: c.region,
+          nameVi: c.nameVi,
+          typeVi: c.typeCode,
+          addressVi: c.addressShortVi || c.addressVi,
+          image: c.imageUrl || getRegionHeroImage(c.region),
+        }))
+      : [];
+
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mt-4 mb-6">
       <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible">
-        {FEATURED_CEMETERIES.map((cemetery) => (
+        {items.map((cemetery) => (
           <div
             key={cemetery.id}
             className="snap-center shrink-0 w-[260px] sm:w-auto bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-6"

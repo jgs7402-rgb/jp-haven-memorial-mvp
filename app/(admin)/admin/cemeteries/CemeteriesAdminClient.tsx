@@ -136,6 +136,16 @@ export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
         alert('부가 이미지를 저장하는 중 오류가 발생했습니다.');
       }
 
+      // 로컬 상태 동기화 (id는 알 수 없지만 현재 입력값을 유지)
+      setExtraImages((prev) => ({
+        ...prev,
+        [id]: imagesPayload.map((img) => ({
+          imageUrl: img.imageUrl,
+          sortOrder: img.sortOrder,
+          isMain: img.isMain,
+        })),
+      }));
+
       setRows((prev) =>
         prev.map((row) =>
           row.id === id
@@ -151,9 +161,17 @@ export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
                 isFeaturedMain: payload.isFeaturedMain,
                 featuredOrderMain,
                 imageUrl,
+                images: imagesPayload.map((img, idx) => ({
+                  id: idx, // placeholder id; real ids will load on refresh
+                  cemeteryId: id,
+                  imageUrl: img.imageUrl,
+                  sortOrder: img.sortOrder,
+                  isMain: img.isMain,
+                  createdAt: '',
+                })),
               }
-            : row
-        )
+            : row,
+        ),
       );
     } catch (err) {
       console.error('Save error', err);

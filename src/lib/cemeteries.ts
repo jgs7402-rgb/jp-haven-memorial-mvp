@@ -36,8 +36,6 @@ export type Cemetery = {
   createdAt: string;
   updatedAt: string | null;
   metaDescriptionVi?: string | null;
-
-  // 🔹 새로 추가: 부가 이미지들
   images?: CemeteryImage[];
 };
 
@@ -57,9 +55,64 @@ export type CemeteryUpdateInput = {
 
 export type UpdateCemeteryAdminInput = CemeteryUpdateInput;
 
-// ---------- 기본 매핑 함수 ----------
+/**
+ * cemetery_image 테이블에서 cemeteries.id 목록에 해당하는 이미지들을
+ * cemeteryId 기준으로 묶어서 반환하는 헬퍼
+ */
+async function fetchImagesByCemeteryIds(
+  cemeteryIds: number[],
+): Promise<Record<number, any[]>> {
+  const result: Record<number, any[]> = {};
 
+  if (cemeteryIds.length === 0) {
+    return result;
+  }
+
+  const { data, error } = await supabaseServer
+    .from('cemetery_image')
+    .select('*')
+    .in('cemetery_id', cemeteryIds);
+
+  console.log('--- fetchImagesByCemeteryIds ---');
+  console.log('[fetchImagesByCemeteryIds] error =', error);
+  console.log(
+    '[fetchImagesByCemeteryIds] row count =',
+    Array.isArray(data) ? data.length : 'no data',
+  );
+
+  if (error || !data) {
+    return result;
+  }
+
+  for (const row of data) {
+    const cid = row.cemetery_id as number;
+    if (!result[cid]) {
+      result[cid] = [];
+    }
+    result[cid].push(row);
+  }
+
+  return result;
+}
+
+// 공통 매핑 함수
 function mapRowToCemetery(row: any): Cemetery {
+  const imageRows: any[] = row.cemetery_image ?? row.images ?? [];
+  const mappedImages: CemeteryImage[] = imageRows.map((img) => ({
+    id: img.id,
+    cemeteryId: img.cemetery_id,
+    imageUrl: img.image_url,
+    sortOrder:
+      img.sort_order === null || img.sort_order === undefined
+        ? null
+        : Number(img.sort_order),
+    isMain: img.is_main ?? false,
+    createdAt: img.created_at ?? '',
+  }));
+
+  const mainImageFromChild =
+    mappedImages.find((img) => img.isMain)?.imageUrl ?? null;
+
   return {
     id: row.id,
     region: row.region as Region,
@@ -80,20 +133,18 @@ function mapRowToCemetery(row: any): Cemetery {
         ? null
         : Number(row.featured_order_main),
     imageUrl: row.image_url ?? null,
-    mainImageUrl: row.main_image_url ?? row.image_url ?? null,
+    mainImageUrl:
+      row.main_image_url ?? mainImageFromChild ?? row.image_url ?? null,
     lat: row.lat ?? null,
     lng: row.lng ?? null,
     createdAt: row.created_at ?? '',
     updatedAt: row.updated_at ?? null,
     metaDescriptionVi: row.meta_description_vi ?? null,
-
-    // images는 fetchCemeteryById에서 따로 채운다
-    images: row.images as CemeteryImage[] | undefined,
+    images: mappedImages,
   };
 }
 
-// ---------- 목록용 fetch ----------
-
+// 전체 목록 (Admin, /jangji 리스트에서 사용)
 export async function fetchCemeteries(): Promise<Cemetery[]> {
   try {
     const { data, error } = await supabaseServer
@@ -105,86 +156,106 @@ export async function fetchCemeteries(): Promise<Cemetery[]> {
 
     console.log('---------------- fetchCemeteries ----------------');
     console.log('[fetchCemeteries] error =', error);
-    console.log('[fetchCemeteries] data =', data);
+    console.log(
+      '[fetchCemeteries] row count =',
+      Array.isArray(data) ? data.length : 'no data',
+    );
 
     if (error || !data) {
       return [];
     }
 
-    return data.map((row) => mapRowToCemetery(row));
+    const ids = data
+      .map((row) => row.id as number | null)
+      .filter((id): id is number => typeof id === 'number');
+
+    const imagesByCemeteryId = await fetchImagesByCemeteryIds(ids);
+
+    const rowsWithImages = data.map((row) => ({
+      ...row,
+      images: imagesByCemeteryId[row.id as number] ?? [],
+    }));
+
+    return rowsWithImages.map(mapRowToCemetery);
   } catch (err) {
     console.error('[fetchCemeteries] unexpected error', err);
     return [];
   }
 }
 
-// ---------- 상세용 fetch (cemetery_image와 JOIN) ----------
+// 홈 추천 장지
+export async function fetchFeaturedCemeteriesForHome(): Promise<Cemetery[]> {
+  try {
+    const { data, error } = await supabaseServer
+      .from('cemeteries')
+      .select('*')
+      .eq('is_active', true)
+      .eq('is_featured_main', true)
+      .order('featured_order_main', { ascending: true })
+      .order('id', { ascending: true });
 
+    console.log(
+      '[fetchFeaturedCemeteriesForHome] row count =',
+      Array.isArray(data) ? data.length : 'no data',
+      'error =',
+      error,
+    );
+
+    if (error || !data) {
+      return [];
+    }
+
+    const ids = data
+      .map((row) => row.id as number | null)
+      .filter((id): id is number => typeof id === 'number');
+
+    const imagesByCemeteryId = await fetchImagesByCemeteryIds(ids);
+
+    const rowsWithImages = data.map((row) => ({
+      ...row,
+      images: imagesByCemeteryId[row.id as number] ?? [],
+    }));
+
+    return rowsWithImages.map(mapRowToCemetery);
+  } catch (err) {
+    console.error('[fetchFeaturedCemeteriesForHome] unexpected error', err);
+    return [];
+  }
+}
+
+// 상세
 export async function fetchCemeteryById(id: number): Promise<Cemetery | null> {
   try {
-    // 1) cemeteries에서 장지 기본 데이터 가져오기
-    const {
-      data: cemeteryRow,
-      error: cemeteryError,
-    } = await supabaseServer
+    const { data, error } = await supabaseServer
       .from('cemeteries')
       .select('*')
       .eq('id', id)
       .eq('is_active', true)
       .maybeSingle();
 
-    console.log('--- fetchCemeteryById:cemetery ---');
+    console.log('--- fetchCemeteryById ---');
     console.log('[fetchCemeteryById] id =', id);
-    console.log('[fetchCemeteryById] cemeteryError =', cemeteryError);
-    console.log('[fetchCemeteryById] cemeteryRow =', cemeteryRow);
+    console.log('[fetchCemeteryById] error =', error);
+    console.log('[fetchCemeteryById] has data =', data ? 'yes' : 'no');
 
-    if (cemeteryError || !cemeteryRow) {
-      // 진짜 장지가 없을 때만 null → /jangji/[id]에서 404
+    if (error || !data) {
       return null;
     }
 
-    const base = mapRowToCemetery(cemeteryRow);
-
-    // 2) cemetery_image 테이블에서 해당 장지의 부가 이미지들 가져오기
-    const {
-      data: imageRows,
-      error: imageError,
-    } = await supabaseServer
-      .from('cemetery_image') // ⚠ 실제 테이블 이름 그대로
-      .select('*')
-      .eq('cemetery_id', id)
-      .order('sort_order', { ascending: true });
-
-    console.log('--- fetchCemeteryById:images ---');
-    console.log('[fetchCemeteryById] imageError =', imageError);
-    console.log('[fetchCemeteryById] imageRows =', imageRows);
-
-    // 이미지 쿼리에서 에러가 나도 페이지 자체는 뜨게 한다
-    const images: CemeteryImage[] =
-      (imageRows ?? []).map((img: any) => ({
-        id: img.id,
-        cemeteryId: img.cemetery_id,
-        imageUrl: img.image_url,
-        sortOrder:
-          img.sort_order === null || img.sort_order === undefined
-            ? null
-            : Number(img.sort_order),
-        isMain: img.is_main ?? false,
-        createdAt: img.created_at ?? '',
-      })) ?? [];
-
-    return {
-      ...base,
-      images,
+    const imagesByCemeteryId = await fetchImagesByCemeteryIds([id]);
+    const rowWithImages = {
+      ...data,
+      images: imagesByCemeteryId[id] ?? [],
     };
+
+    return mapRowToCemetery(rowWithImages);
   } catch (err) {
     console.error('[fetchCemeteryById] unexpected error', err);
     return null;
   }
 }
 
-// ---------- Admin 업데이트용 ----------
-
+// Admin 업데이트
 export async function updateCemeteryAdmin(
   input: UpdateCemeteryAdminInput,
 ): Promise<void> {
@@ -203,7 +274,6 @@ export async function updateCemeteryAdmin(
       is_featured_main: rest.isFeaturedMain,
       featured_order_main: rest.featuredOrderMain,
       image_url: rest.imageUrl,
-      // updated_at은 DB에서 trigger로 관리하거나 여기서 now() 넣어도 된다.
     })
     .eq('id', id);
 
