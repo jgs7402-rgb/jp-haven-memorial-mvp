@@ -35,7 +35,7 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
         {cemeteries.map((cemetery) => (
           <div
             key={cemetery.id}
-            className="section-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-6"
+            className="section-card overflow-hidden p-6"
           >
             <div className="w-full h-48 bg-gray-100 rounded mb-4 overflow-hidden">
               <img

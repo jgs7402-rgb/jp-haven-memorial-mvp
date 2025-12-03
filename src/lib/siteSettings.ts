@@ -1,4 +1,5 @@
 // src/lib/siteSettings.ts
+
 import { supabaseServer } from '@/src/lib/supabase/server';
 
 export const SITE_SETTINGS_ROW_ID = 1;
@@ -8,6 +9,8 @@ export type SiteSettings = {
   hotlineNumber: string | null;
   businessHoursText: string | null;
   supportEmail: string | null;
+  hotlineNoticeVi: string | null;
+  hotlineNoticeKo: string | null;
   heroTitleVi: string | null;
   heroSubtitleVi: string | null;
   heroCtaPrimaryVi: string | null;
@@ -32,13 +35,12 @@ export type SiteSettings = {
   ogDefaultImageAltVi: string | null;
 };
 
-const siteSettingsColumnMap: Record<
-  keyof Omit<SiteSettings, 'id'>,
-  string
-> = {
+const siteSettingsColumnMap: Record<keyof Omit<SiteSettings, 'id'>, string> = {
   hotlineNumber: 'hotline_number',
   businessHoursText: 'business_hours_text',
   supportEmail: 'support_email',
+  hotlineNoticeVi: 'hotline_notice_vi',
+  hotlineNoticeKo: 'hotline_notice_ko',
   heroTitleVi: 'hero_title_vi',
   heroSubtitleVi: 'hero_subtitle_vi',
   heroCtaPrimaryVi: 'hero_cta_primary_vi',
@@ -75,6 +77,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   hotlineNumber: null,
   businessHoursText: '08:00 – 21:00 (Giờ Việt Nam)',
   supportEmail: 'info@jphaven.com',
+  hotlineNoticeVi: null,
+  hotlineNoticeKo: null,
   heroTitleVi:
     'Chọn nơi an nghỉ cuối cùng một cách bình tĩnh và minh bạch.',
   heroSubtitleVi:
@@ -109,6 +113,8 @@ export function mapRowToSiteSettings(row: Record<string, any>): SiteSettings {
     hotlineNumber: row.hotline_number ?? null,
     businessHoursText: row.business_hours_text ?? null,
     supportEmail: row.support_email ?? null,
+    hotlineNoticeVi: row.hotline_notice_vi ?? null,
+    hotlineNoticeKo: row.hotline_notice_ko ?? null,
     heroTitleVi: row.hero_title_vi ?? null,
     heroSubtitleVi: row.hero_subtitle_vi ?? null,
     heroCtaPrimaryVi: row.hero_cta_primary_vi ?? null,
@@ -164,7 +170,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     if (error || !data) {
       console.error('[getSiteSettings] error =', error);
 
-      // Attempt to seed a default row to keep a single-row invariant
       const { data: seededData, error: seedError } = await supabaseServer
         .from('site_settings')
         .upsert(mapSiteSettingsToDb(DEFAULT_SITE_SETTINGS), {
@@ -192,5 +197,5 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   }
 }
 
-// Backward compatibility for existing imports
+// 기존 코드 호환용 alias
 export { getSiteSettings as fetchSiteSettings };

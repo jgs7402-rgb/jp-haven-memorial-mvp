@@ -15,6 +15,8 @@ const editableKeys: Array<keyof SiteSettingsPayload> = [
   'hotlineNumber',
   'businessHoursText',
   'supportEmail',
+  'hotlineNoticeVi',
+  'hotlineNoticeKo',
   'heroTitleVi',
   'heroSubtitleVi',
   'heroCtaPrimaryVi',

@@ -1,7 +1,7 @@
 // components/contact/ContactModal.tsx
 'use client';
 
-import { MouseEvent } from 'react';
+import { MouseEvent, FormEvent, useState } from 'react';
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -18,6 +18,9 @@ export default function ContactModal({
   action = '/api/contact',
   source = 'contact-modal',
 }: ContactModalProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
   if (!isOpen) return null;
 
   const handleBackdropClick = () => {
@@ -27,6 +30,40 @@ export default function ContactModal({
   const handleContentClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setMessage(null);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const res = await fetch(action, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const json = (await res.json()) as
+        | { ok: boolean; message?: string; error?: string }
+        | null;
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error ?? '전송 중 오류가 발생했습니다.');
+      }
+
+      setMessage(json.message ?? 'Thông tin đã được ghi nhận.');
+      setTimeout(() => {
+        onClose();
+        setMessage(null);
+      }, 1500);
+    } catch (err: any) {
+      console.error('[ContactModal] submit error =', err);
+      setMessage(err?.message ?? '전송 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div
@@ -51,7 +88,7 @@ export default function ContactModal({
           </button>
         </div>
 
-        <form method="POST" action={action} className="space-y-3 text-sm">
+        <form onSubmit={handleSubmit} className="space-y-3 text-sm">
           <div className="space-y-1">
             <label className="text-xs font-medium text-slate-700">
               Họ và tên
@@ -104,19 +141,33 @@ export default function ContactModal({
 
           <input type="hidden" name="source" value={source} />
 
+          {message && (
+            <div
+              className={`rounded-lg border px-3 py-2 text-xs ${
+                message.includes('오류')
+                  ? 'border-rose-200 bg-rose-50 text-rose-800'
+                  : 'border-emerald-200 bg-emerald-50 text-emerald-800'
+              }`}
+            >
+              {message}
+            </div>
+          )}
+
           <div className="mt-4 flex justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+              disabled={isSubmitting}
+              className="rounded-md border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-60"
             >
               Hủy
             </button>
             <button
               type="submit"
-              className="rounded-md bg-sky-600 px-4 py-2 text-xs font-semibold text-white hover:bg-sky-700"
+              disabled={isSubmitting}
+              className="rounded-md bg-sky-600 px-4 py-2 text-xs font-semibold text-white hover:bg-sky-700 disabled:opacity-60"
             >
-              Gửi yêu cầu
+              {isSubmitting ? 'Đang gửi...' : 'Gửi yêu cầu'}
             </button>
           </div>
         </form>

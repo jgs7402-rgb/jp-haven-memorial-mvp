@@ -1,15 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { supabaseClient } from '@/src/lib/supabase/client';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard' },
   { href: '/admin/inquiries', label: '문의 관리' },
   { href: '/admin/cemeteries', label: '장지 데이터' },
-  { href: '/admin/hotline', label: 'Hotline 설정' },
-  { href: '/admin/homepage-images', label: '메인 이미지' },
+  { href: '/admin/homepage-images', label: '고객 후기 관리' },
 ];
 
 export default function AdminLayout({
@@ -18,7 +18,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  async function handleLogout() {
+    await supabaseClient.auth.signOut();
+    router.push('/admin/login');
+  }
 
   // 로그인 페이지는 별도 레이아웃(사이드바 없음)
   if (pathname?.startsWith('/admin/login')) {
@@ -75,6 +81,7 @@ export default function AdminLayout({
               </div>
               <button
                 type="button"
+                onClick={handleLogout}
                 className="rounded-lg bg-sky-600 px-4 py-2 text-white text-sm font-semibold shadow-soft hover:bg-sky-700"
               >
                 로그아웃

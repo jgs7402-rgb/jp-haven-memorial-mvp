@@ -28,3 +28,9 @@ This repository will contain the Next.js 14 + Supabase MVP for JP Haven Memorial
 - Tailwind CSS
 - Supabase (DB)
 - Vercel (예정)
+
+## Future Plan – Region-specific hotlines (not implemented yet)
+
+나중에는 북부 / 중부 / 남부 등 지역별로 다른 Hotline 번호와 안내문구를 설정할 수 있는 기능을 추가할 예정입니다. 현재는 전역 공통 Hotline 설정만 지원하며, 관련 기획 및 스키마 설계는 추후에 단계적으로 진행합니다.
+
+In the future, we may support region-specific hotline settings (e.g., different hotline numbers / notices for North, Central, South regions). For now, only a single global hotline configuration is implemented.

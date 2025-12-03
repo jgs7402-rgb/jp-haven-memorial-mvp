@@ -17,7 +17,7 @@ body {
 }
 
 .section-card {
-  @apply bg-white rounded-xl shadow-card;
+  @apply bg-white rounded-xl shadow-card border border-slate-100;
 }
 
 .text-muted {

@@ -1,5 +1,13 @@
 {
   "node": {
+    "eb03153dea4f2dde9f0e726b85bca27b04f3f4c7": {
+      "workers": {
+        "app/(admin)/admin/inquiries/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjopro%2FJP%20Haven-MVP2%2Fjp-haven-memorial-mvp%2Fapp%2F(admin)%2Fadmin%2Finquiries%2Factions.ts%22%2C%5B%22updateInquiryStatusAction%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/(admin)/admin/inquiries/page": "action-browser"
+      }
+    },
     "04375cfb6e16028dc9a348b13ad8487a5bb8cdff": {
       "workers": {
         "app/(public)/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjopro%2FJP%20Haven-MVP2%2Fjp-haven-memorial-mvp%2Fapp%2F(public)%2Factions%2FsubmitInquiry.ts%22%2C%5B%22submitInquiry%22%5D%5D%5D&__client_imported__=true!"
@@ -10,5 +18,5 @@
     }
   },
   "edge": {},
-  "encryptionKey": "qgs7VDYPTt0GDOqGNr9GIcKrWhjAkZziit8AszjeoiY="
+  "encryptionKey": "KM0wv9mV4OLUk4NQrmtpnx3f+ESCKb2L3t93aNRa4Eo="
 }

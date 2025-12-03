@@ -121,6 +121,21 @@ export default function AdminSiteSettingsClient({ initialSettings }: Props) {
             className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           />
         </div>
+
+        <div className="space-y-1">
+          <label className="text-sm font-medium text-slate-700">
+            Hotline 안내문구 (VI)
+          </label>
+          <textarea
+            value={form.hotlineNoticeVi ?? ''}
+            onChange={(e) => handleChange('hotlineNoticeVi', e.target.value)}
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            rows={4}
+          />
+          <p className="text-xs text-slate-500">
+            Hotline 아래에 표시될 베트남어 안내문구입니다. 여러 줄로 작성할 수 있습니다.
+          </p>
+        </div>
       </section>
 
       {/* 메인 히어로 */}

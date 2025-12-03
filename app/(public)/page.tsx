@@ -98,7 +98,7 @@ export default async function HomePage() {
       {/* ========================= */}
       {/* Hero 섹션 */}
       {/* ========================= */}
-      <section className="container mx-auto pt-12 pb-16 md:pt-16 md:pb-20">
+      <section className="container mx-auto pt-10 pb-12 md:pt-12 md:pb-14">
         <div className="max-w-md md:max-w-2xl mx-auto text-center space-y-6">
           <h1 className="text-4xl font-bold">{heroTitle}</h1>
           <p className="text-lg text-gray-600">{heroSubtitle}</p>
@@ -135,13 +135,21 @@ export default async function HomePage() {
           <p className="text-sm text-gray-500">
             Hotline: {hotlineNumber} · {businessHours}
           </p>
+
+          {siteSettings?.hotlineNoticeVi ? (
+            <div className="mt-4 section-card py-6 px-5 text-left">
+              <p className="text-base md:text-lg text-slate-700 whitespace-pre-line leading-relaxed">
+                {siteSettings.hotlineNoticeVi}
+              </p>
+            </div>
+          ) : null}
         </div>
       </section>
 
       {/* ========================= */}
       {/* 장지 티저 섹션 */}
       {/* ========================= */}
-      <section className="container mx-auto py-12 mt-8 md:mt-10">
+      <section className="container mx-auto py-12 mt-0 md:mt-2">
         <h2 className="text-2xl font-bold mb-6">Nghĩa trang nổi bật</h2>
         <FeaturedCemeteries cemeteries={featuredCemeteries} />
         <div className="text-center">
@@ -241,7 +249,7 @@ function FeaturedCemeteries({ cemeteries }: { cemeteries: Cemetery[] }) {
         {items.map((cemetery) => (
           <div
             key={cemetery.id}
-            className="snap-center shrink-0 w-[260px] sm:w-auto bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-6"
+            className="snap-center shrink-0 w-[260px] sm:w-auto section-card overflow-hidden p-6"
           >
             <div className="w-full h-40 bg-gray-100 rounded mb-4 overflow-hidden">
               <img

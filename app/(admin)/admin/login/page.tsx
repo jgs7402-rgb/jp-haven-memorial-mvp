@@ -16,9 +16,6 @@ export default function AdminLoginPage() {
         <div className="space-y-1">
           <p className="text-sm font-semibold text-sky-600">Admin</p>
           <h1 className="text-xl font-bold">로그인</h1>
-          <p className="text-xs text-slate-500">
-            개발용 계정: ID admin / PW cho342020 (mock)
-          </p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>

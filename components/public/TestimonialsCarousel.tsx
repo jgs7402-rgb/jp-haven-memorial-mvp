@@ -13,17 +13,7 @@ type TestimonialsCarouselProps = {
 
 export function TestimonialsCarousel({ items }: TestimonialsCarouselProps) {
   const [index, setIndex] = useState(0);
-
   const length = items.length;
-  if (length === 0) {
-    return null;
-  }
-
-  const visible: Testimonial[] = [];
-  for (let i = 0; i < Math.min(3, length); i += 1) {
-    const currentIndex = (index + i) % length;
-    visible.push(items[currentIndex]);
-  }
 
   useEffect(() => {
     if (length <= 3) return;
@@ -34,6 +24,16 @@ export function TestimonialsCarousel({ items }: TestimonialsCarouselProps) {
 
     return () => clearInterval(interval);
   }, [length]);
+
+  if (length === 0) {
+    return null;
+  }
+
+  const visible: Testimonial[] = [];
+  for (let i = 0; i < Math.min(3, length); i += 1) {
+    const currentIndex = (index + i) % length;
+    visible.push(items[currentIndex]);
+  }
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
