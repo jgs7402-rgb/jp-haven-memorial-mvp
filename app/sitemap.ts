@@ -1,45 +1,27 @@
 // app/sitemap.ts
 import type { MetadataRoute } from 'next';
-import { fetchCemeteries } from '@/src/lib/cemeteries';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'; // TODO: set real domain in Vercel
 
-  const cemeteries = await fetchCemeteries();
+  const now = new Date();
 
-  const staticUrls: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/jangji`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/company`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-  ];
+  const staticPaths: string[] = ['', '/jangji', '/company'];
 
-  const cemeteryUrls: MetadataRoute.Sitemap = cemeteries.map((c) => {
-    const updated =
-      (c.updatedAt as string | null) || (c.createdAt as string | null);
+  const routes: MetadataRoute.Sitemap = staticPaths.map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: now,
+  }));
 
-    return {
-      url: `${baseUrl}/jangji/${c.id}`,
-      lastModified: updated ? new Date(updated) : new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    };
-  });
+  // TODO: Later, add dynamic jangji/[id] URLs by querying Supabase cemeteries.
+  // Example:
+  // const cemeteries = await fetchCemeteries();
+  // const cemeteryUrls = cemeteries.map((c) => ({
+  //   url: `${baseUrl}/jangji/${c.id}`,
+  //   lastModified: c.updatedAt ? new Date(c.updatedAt) : now,
+  // }));
+  // return [...routes, ...cemeteryUrls];
 
-  return [...staticUrls, ...cemeteryUrls];
+  return routes;
 }

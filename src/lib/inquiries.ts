@@ -1,7 +1,8 @@
 // src/lib/inquiries.ts
 
-import { supabaseServer, supabaseUrl } from '@/src/lib/supabase/server';
+import { supabaseServer } from '@/src/lib/supabase/server';
 
+// 문의 한 건(row)의 타입
 export type InquiryRow = {
   id: number;
   name: string;
@@ -18,6 +19,9 @@ export type InquiryRow = {
   updated_at: string | null;
 };
 
+// 상태 타입 (Admin에서 import해서 사용)
+export type InquiryStatus = 'new' | 'in_progress' | 'done';
+
 export type CreateInquiryInput = {
   name: string;
   phone: string;
@@ -29,16 +33,20 @@ export type CreateInquiryInput = {
   source: string | null;
 };
 
+// 🔥 기존 코드 호환을 위해 InquiryInput 이름도 같이 export
+export type InquiryInput = CreateInquiryInput;
+
 export type CreateInquiryResult = {
   ok: boolean;
   data: InquiryRow | null;
   error: string | null;
 };
 
+// 공개 사이트 폼에서 호출하는 insert 함수
 export async function createInquiry(
   input: CreateInquiryInput,
 ): Promise<CreateInquiryResult> {
-  const supabase = supabaseServer; // 👈 여기 괄호 없음
+  const supabase = supabaseServer;
 
   console.log('[createInquiry] inserting into public.inquiries input =', input);
 
@@ -80,42 +88,11 @@ export async function createInquiry(
   };
 }
 
-export async function debugSingleInquiry() {
-  const supabase = supabaseServer;
-  console.log('[debugSingleInquiry] ===== Starting debug query =====');
-  console.log('[debugSingleInquiry] querying public.inquiries...');
-  console.log('[debugSingleInquiry] supabase URL:', supabaseUrl);
-  
-  const { data, error } = await supabase
-    .from('inquiries')
-    .select('*')
-    .order('id', { ascending: false })
-    .limit(5);
-
-  console.log('[debugSingleInquiry] data =', data);
-  console.log('[debugSingleInquiry] error =', error);
-  console.log('[debugSingleInquiry] data type =', typeof data);
-  console.log('[debugSingleInquiry] is array =', Array.isArray(data));
-  console.log('[debugSingleInquiry] data length =', data?.length ?? 0);
-  if (error) {
-    console.error('[debugSingleInquiry] error details:', {
-      message: error.message,
-      details: error.details,
-      hint: error.hint,
-      code: error.code,
-    });
-  }
-  console.log('[debugSingleInquiry] ===== Debug query finished =====');
-  return { data, error };
-}
-
+// Admin 리스트에서 사용하는 전체 조회
 export async function getInquiries(): Promise<InquiryRow[]> {
   const supabase = supabaseServer;
 
   console.log('[getInquiries] ===== Starting query =====');
-  console.log('[getInquiries] Using supabaseServer (service role key)');
-  console.log('[getInquiries] Target: public.inquiries table');
-  console.log('[getInquiries] supabase URL:', supabaseUrl);
 
   const { data, error } = await supabase
     .from('inquiries')
@@ -124,44 +101,63 @@ export async function getInquiries(): Promise<InquiryRow[]> {
 
   if (error) {
     console.error('[getInquiries] error =', error);
-    console.log('[getInquiries] ===== Query finished (error) =====');
     return [];
   }
 
-  console.log('[getInquiries] Query completed');
-  console.log('[getInquiries] row count =', Array.isArray(data) ? data.length : 0);
-  console.log('[getInquiries] sample row =', Array.isArray(data) ? data[0] : undefined);
-  console.log('[getInquiries] Raw data array length:', Array.isArray(data) ? data.length : 0);
+  const rows = (Array.isArray(data) ? data : []) as InquiryRow[];
+
+  console.log('[getInquiries] row count =', rows.length);
+  if (rows.length > 0) {
+    console.log('[getInquiries] sample row =', rows[0]);
+  }
   console.log('[getInquiries] ===== Query finished =====');
 
-  return (Array.isArray(data) ? data : []) as InquiryRow[];
+  return rows;
 }
 
-export type InquiryStatus = 'new' | 'in_progress' | 'done';
+// 메모 업데이트 (API route에서 import)
+export async function updateInquiryMemo(
+  id: number,
+  memo: string | null,
+): Promise<{ ok: boolean; error: string | null }> {
+  const supabase = supabaseServer;
 
+  const { error } = await supabase
+    .from('inquiries')
+    .update({ memo })
+    .eq('id', id);
+
+  if (error) {
+    console.error('[updateInquiryMemo] error =', error);
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true, error: null };
+}
+
+// 상태 업데이트 (Admin에서 상태 변경용, actions.ts / API route에서 import)
 export async function updateInquiryStatus(
   id: number,
   status: InquiryStatus,
-): Promise<{ ok: true; data: InquiryRow } | { ok: false; error: string }> {
+): Promise<{ ok: boolean; error: string | null }> {
   const supabase = supabaseServer;
 
-  console.log('[updateInquiryStatus] updating inquiry', id, 'to status', status);
+  console.log(
+    '[updateInquiryStatus] updating status for inquiry id =',
+    id,
+    'to',
+    status,
+  );
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('inquiries')
-    .update({ status, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .select('*')
-    .single();
+    .update({ status })
+    .eq('id', id);
 
-  if (error || !data) {
+  if (error) {
     console.error('[updateInquiryStatus] error =', error);
-    return {
-      ok: false,
-      error: error?.message ?? 'Failed to update inquiry status',
-    };
+    return { ok: false, error: error.message };
   }
 
-  console.log('[updateInquiryStatus] success, updated row =', data);
-  return { ok: true, data: data as InquiryRow };
+  return { ok: true, error: null };
 }

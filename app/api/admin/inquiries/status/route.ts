@@ -1,43 +1,43 @@
 // app/api/admin/inquiries/status/route.ts
+
 import { NextResponse } from 'next/server';
 import { updateInquiryStatus, type InquiryStatus } from '@/src/lib/inquiries';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { id, status } = body as { id: number; status: InquiryStatus };
 
-    if (!id || !status) {
+    const id = Number(body.id);
+    const statusValue = String(body.status || '').trim();
+
+    if (!id || !statusValue) {
       return NextResponse.json(
-        { ok: false, error: 'id and status are required' },
+        { ok: false, error: 'Missing id or status' },
         { status: 400 },
       );
     }
 
-    if (!['new', 'in_progress', 'done'].includes(status)) {
-      return NextResponse.json(
-        { ok: false, error: 'Invalid status value' },
-        { status: 400 },
-      );
-    }
+    const status = statusValue as InquiryStatus;
 
     const result = await updateInquiryStatus(id, status);
 
     if (!result.ok) {
       return NextResponse.json(
-        { ok: false, error: result.error },
+        {
+          ok: false,
+          error: result.error ?? 'Failed to update status',
+        },
         { status: 500 },
       );
     }
 
-    return NextResponse.json({ ok: true, data: result.data });
+    // 🔥 더 이상 result.data 같은 건 절대 쓰지 않는다.
+    return NextResponse.json({ ok: true, error: null });
   } catch (error: any) {
     console.error('[api/admin/inquiries/status] unexpected error =', error);
     return NextResponse.json(
-      { ok: false, error: error?.message ?? 'Unknown error' },
+      { ok: false, error: 'Unexpected server error' },
       { status: 500 },
     );
   }
 }
-
-

@@ -1,15 +1,12 @@
 // app/(admin)/admin/inquiries/page.tsx
 
-import { getInquiries, debugSingleInquiry } from '@/src/lib/inquiries';
+import { getInquiries } from '@/src/lib/inquiries';
 import { AdminInquiriesClient } from './AdminInquiriesClient';
 
 export default async function AdminInquiriesPage() {
   console.log('[AdminInquiriesPage] Fetching inquiries...');
   const inquiries = await getInquiries();
   console.log('[AdminInquiriesPage] Received inquiries:', inquiries.length);
-  
-  // 디버그: debugSingleInquiry 호출
-  await debugSingleInquiry();
 
   return (
     <div className="space-y-6">

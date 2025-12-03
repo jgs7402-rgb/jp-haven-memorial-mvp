@@ -1,3 +1,4 @@
+// app/(public)/actions/submitInquiry.ts
 'use server';
 
 import { createInquiry } from '@/src/lib/inquiries';
@@ -20,6 +21,7 @@ export async function submitInquiry(
     const budget = formData.get('budget')?.toString().trim() ?? '';
     const note = formData.get('note')?.toString().trim() ?? '';
 
+    // 필수값 검증 (이름/전화)
     if (!name || !phone) {
       return {
         success: false,
@@ -29,7 +31,7 @@ export async function submitInquiry(
       };
     }
 
-    // 1) DB 저장
+    // 1) DB에 저장
     const result = await createInquiry({
       name,
       phone,
@@ -51,12 +53,19 @@ export async function submitInquiry(
       };
     }
 
-    console.log(
-      '[submitInquiry] Inquiry saved successfully to DB, id:',
-      result.data.id,
-    );
+    // ✅ TS 에러 방지: data 존재할 때만 id 로그 찍기
+    if (result.data) {
+      console.log(
+        '[submitInquiry] Inquiry saved successfully to DB, id:',
+        result.data.id,
+      );
+    } else {
+      console.warn(
+        '[submitInquiry] ok=true 인데 result.data가 비어 있습니다. (이론상 거의 안 나와야 함)',
+      );
+    }
 
-    // 2) 이메일 (실패해도 전체 성공)
+    // 2) 이메일 전송 시도 (실패해도 전체 성공 처리)
     let emailSent = false;
     try {
       const emailResult = await sendInquiryEmail({
@@ -85,7 +94,7 @@ export async function submitInquiry(
       emailSent = false;
     }
 
-    // ✅ DB 성공이면 무조건 success = true
+    // DB 저장 성공이므로 항상 success = true 반환
     return {
       success: true,
       emailSent,
@@ -97,7 +106,6 @@ export async function submitInquiry(
     console.error('[submitInquiry] unexpected error =', err);
     const errorMessage =
       err instanceof Error ? err.message : 'Unknown error occurred';
-
     return {
       success: false,
       emailSent: false,
