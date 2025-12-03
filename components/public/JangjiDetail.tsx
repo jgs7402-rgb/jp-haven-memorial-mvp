@@ -147,7 +147,7 @@ export default function JangjiDetail({ cemetery }: Props) {
         <div className="h-72 w-full overflow-hidden rounded-2xl bg-slate-200">
           <iframe
             title={`Bản đồ ${cemetery.nameVi}`}
-            src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+            src={`https://www.google.com/maps?q=${mapQuery}&output=embed&hl=vi&region=VN`}
             className="h-full w-full border-0"
             loading="lazy"
           />

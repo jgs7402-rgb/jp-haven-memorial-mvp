@@ -1,12 +1,7 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/company/page": "app/company/page.js",
   "/(public)/page": "app/(public)/page.js",
-  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js",
   "/(public)/jangji/page": "app/(public)/jangji/page.js",
-  "/(admin)/admin/inquiries/page": "app/(admin)/admin/inquiries/page.js",
-  "/(admin)/admin/login/page": "app/(admin)/admin/login/page.js",
-  "/(admin)/admin/settings/page": "app/(admin)/admin/settings/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/(admin)/admin/homepage-images/page": "app/(admin)/admin/homepage-images/page.js",
-  "/(admin)/admin/cemeteries/page": "app/(admin)/admin/cemeteries/page.js"
+  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js"
 }

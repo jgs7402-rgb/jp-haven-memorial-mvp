@@ -1,15 +1,13 @@
 // src/lib/supabase/server.ts
 import { createClient } from '@supabase/supabase-js';
 
-
-export const supabaseUrl = 'https://mgqnadogbqjmemzneprt.supabase.co'; 
-const serviceRoleKey = 'sb_secret_EA1KZomeB2imR4-4cIhjPQ_W7pBdNID';    // service_role key
-
-console.log('[supabaseServer] url:', supabaseUrl);
-console.log('[supabaseServer] service role key exists:', !!serviceRoleKey);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !serviceRoleKey) {
-  throw new Error('Supabase env not configured');
+  throw new Error(
+    'Supabase env not configured: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required',
+  );
 }
 
 export const supabaseServer = createClient(supabaseUrl, serviceRoleKey, {

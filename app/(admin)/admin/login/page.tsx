@@ -24,7 +24,6 @@ export default function AdminLoginPage() {
             <input
               name="id"
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
-              defaultValue="admin"
             />
           </label>
           <label className="block text-sm font-medium text-slate-700">
@@ -33,7 +32,6 @@ export default function AdminLoginPage() {
               name="password"
               type="password"
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
-              defaultValue="cho342020"
             />
           </label>
           <button

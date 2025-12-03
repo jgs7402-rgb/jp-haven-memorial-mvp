@@ -124,7 +124,9 @@ export default async function HomePage() {
 
             {heroCtaTertiary ? (
               <a
-                href={zaloUrl || '#'}
+                href="https://zalo.me/3258467487025854421"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
               >
                 {heroCtaTertiary}
