@@ -3,6 +3,9 @@
 import { getInquiries } from '@/src/lib/inquiries';
 import { AdminInquiriesClient } from './AdminInquiriesClient';
 
+// 새로 생성된 문의가 즉시 반영되도록 캐시 비활성화
+export const revalidate = 0;
+
 export default async function AdminInquiriesPage() {
   console.log('[AdminInquiriesPage] Fetching inquiries...');
   const inquiries = await getInquiries();

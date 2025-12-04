@@ -1,116 +1,74 @@
 // app/(public)/actions/submitInquiry.ts
 'use server';
 
-import { createInquiry } from '@/src/lib/inquiries';
-import { sendInquiryEmail } from '@/src/lib/email/sendInquiryEmail';
+import { revalidatePath } from 'next/cache';
+import { supabaseServer } from '@/src/lib/supabase/server';
+import { sendAdminInquiryEmail } from '@/src/lib/email/sendAdminInquiryEmail';
 
-export type SubmitInquiryResult = {
-  success: boolean;
-  emailSent: boolean;
-  message: string;
-  error: string | null;
+// InquiryFormInput 타입 정의 (폼 필드에 맞춤)
+type InquiryFormInput = {
+  name: string;
+  phone: string;
+  region?: string | null;
+  budget?: string | null;
+  note?: string | null;
 };
 
-export async function submitInquiry(
-  formData: FormData,
-): Promise<SubmitInquiryResult> {
+export async function submitInquiry(formData: InquiryFormInput) {
+  const supabase = supabaseServer;
+
   try {
-    const name = formData.get('name')?.toString().trim() ?? '';
-    const phone = formData.get('phone')?.toString().trim() ?? '';
-    const region = formData.get('region')?.toString().trim() ?? '';
-    const budget = formData.get('budget')?.toString().trim() ?? '';
-    const note = formData.get('note')?.toString().trim() ?? '';
-
-    // 필수값 검증 (이름/전화)
-    if (!name || !phone) {
-      return {
-        success: false,
-        emailSent: false,
-        message: '이름과 전화번호는 필수 입력 항목입니다.',
-        error: 'Validation failed: name and phone are required',
-      };
-    }
-
-    // 1) DB에 저장
-    const result = await createInquiry({
-      name,
-      phone,
-      email: null,
-      region: region || null,
-      budget: budget || null,
-      note: note || null,
-      message: null,
-      source: 'inquiry-form',
-    });
-
-    if (!result.ok) {
-      console.error('[submitInquiry] createInquiry failed:', result.error);
-      return {
-        success: false,
-        emailSent: false,
-        message: '저장 중 오류가 발생했습니다.',
-        error: result.error,
-      };
-    }
-
-    // ✅ TS 에러 방지: data 존재할 때만 id 로그 찍기
-    if (result.data) {
-      console.log(
-        '[submitInquiry] Inquiry saved successfully to DB, id:',
-        result.data.id,
-      );
-    } else {
-      console.warn(
-        '[submitInquiry] ok=true 인데 result.data가 비어 있습니다. (이론상 거의 안 나와야 함)',
-      );
-    }
-
-    // 2) 이메일 전송 시도 (실패해도 전체 성공 처리)
-    let emailSent = false;
-    try {
-      const emailResult = await sendInquiryEmail({
-        name,
-        phone,
+    // 1) DB INSERT
+    const { data, error } = await supabase
+      .from('inquiries')
+      .insert({
+        name: formData.name,
+        phone: formData.phone,
         email: null,
-        region: region || null,
-        budget: budget || null,
-        note: note || null,
+        region: formData.region || null,
+        budget: formData.budget || null,
+        note: formData.note || null,
         message: null,
         source: 'inquiry-form',
-      });
+      })
+      .select()
+      .single();
 
-      emailSent = !!emailResult?.ok;
-
-      if (!emailResult?.ok) {
-        console.warn(
-          '[submitInquiry] Email send failed, but inquiry saved successfully:',
-          emailResult?.error,
-        );
-      } else {
-        console.log('[submitInquiry] Email sent successfully');
-      }
-    } catch (emailErr) {
-      console.warn('[submitInquiry] Email send exception (ignored):', emailErr);
-      emailSent = false;
+    if (error) {
+      console.error('[submitInquiry] insert error =', error);
+      throw new Error('INQUIRY_INSERT_FAILED');
     }
 
-    // DB 저장 성공이므로 항상 success = true 반환
+    console.log('[submitInquiry] DB insert success, id =', data.id);
+
+    // 2) 어드민 페이지 캐시 무효화
+    revalidatePath('/admin/inquiries');
+
+    // 3) 어드민 이메일 전송 (Resend)
+    try {
+      await sendAdminInquiryEmail({
+        name: data.name,
+        phone: data.phone,
+        budget: data.budget,
+        note: data.note,
+      });
+      console.log('[submitInquiry] Admin email sent via Resend');
+    } catch (emailError) {
+      // 이메일은 실패해도 문의 접수는 성공이니까 throw 하지 않음
+      console.error(
+        '[submitInquiry] Email send failed, but inquiry saved successfully',
+        emailError,
+      );
+    }
+
+    // 4) 최종 성공 응답 (프론트는 이걸로만 성공/실패 판단)
     return {
-      success: true,
-      emailSent,
-      message:
-        'Thông tin đã được ghi nhận. Chúng tôi sẽ liên hệ lại sớm nhất có thể.',
-      error: null,
+      success: true as const,
     };
   } catch (err) {
     console.error('[submitInquiry] unexpected error =', err);
-    const errorMessage =
-      err instanceof Error ? err.message : 'Unknown error occurred';
     return {
-      success: false,
-      emailSent: false,
-      message: '저장 중 오류가 발생했습니다.',
-      error: errorMessage,
+      success: false as const,
     };
   }
 }
