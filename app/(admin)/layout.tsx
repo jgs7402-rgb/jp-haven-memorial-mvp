@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { supabaseClient } from '@/src/lib/supabase/client';
+import { adminLogoutAction } from './admin/logout/actions';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard' },
@@ -18,13 +18,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  async function handleLogout() {
-    await supabaseClient.auth.signOut();
-    router.push('/admin/login');
-  }
 
   // 로그인 페이지는 별도 레이아웃(사이드바 없음)
   if (pathname?.startsWith('/admin/login')) {
@@ -79,13 +74,14 @@ export default function AdminLayout({
               <div className="hidden md:block text-sm text-slate-500">
                 admin님 환영합니다.
               </div>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="rounded-lg bg-sky-600 px-4 py-2 text-white text-sm font-semibold shadow-soft hover:bg-sky-700"
-              >
-                로그아웃
-              </button>
+              <form action={adminLogoutAction}>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-sky-600 px-4 py-2 text-white text-sm font-semibold shadow-soft hover:bg-sky-700"
+                >
+                  로그아웃
+                </button>
+              </form>
             </div>
           </header>
 

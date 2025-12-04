@@ -1,12 +1,29 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { adminLoginAction } from './actions';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+    const result = await adminLoginAction(formData);
+
+    if (!result || !result.ok) {
+      setError(result?.error ?? '로그인에 실패했습니다.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // 성공 시 클라이언트에서 리다이렉트
     router.push('/admin');
   }
 
@@ -23,6 +40,7 @@ export default function AdminLoginPage() {
             아이디
             <input
               name="id"
+              required
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
             />
           </label>
@@ -31,14 +49,21 @@ export default function AdminLoginPage() {
             <input
               name="password"
               type="password"
+              required
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
             />
           </label>
+          {error && (
+            <div className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+              {error}
+            </div>
+          )}
           <button
             type="submit"
-            className="w-full rounded-lg bg-sky-600 px-4 py-2 text-white text-sm font-semibold shadow-soft hover:bg-sky-700"
+            disabled={isSubmitting}
+            className="w-full rounded-lg bg-sky-600 px-4 py-2 text-white text-sm font-semibold shadow-soft hover:bg-sky-700 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            로그인
+            {isSubmitting ? '로그인 중...' : '로그인'}
           </button>
         </form>
       </div>
