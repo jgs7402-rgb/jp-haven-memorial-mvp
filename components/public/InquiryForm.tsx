@@ -37,36 +37,42 @@ export function InquiryForm() {
     };
 
     try {
-      await submitInquiry(inquiryData);
+      const result = await submitInquiry(inquiryData);
 
-      // ✅ submitInquiry가 예외 없이 끝났다는 것 자체가 "성공"이다.
-      // 이제 베트남어 후보 3 성공 메시지를 보여준다.
-      console.log('[InquiryForm] SUCCESS: submitInquiry completed without exception');
-      setIsError(false);
-      setServerMessage(
-        'Yêu cầu tư vấn của bạn đã được gửi thành công.\nĐội ngũ JP Haven sẽ liên hệ với bạn trong thời gian sớm nhất.',
-      );
+      // ✅ submitInquiry가 성공했는지 확인
+      if (result && result.success === true) {
+        console.log('[InquiryForm] SUCCESS: submitInquiry completed successfully');
+        setIsError(false);
+        setServerMessage(
+          'Yêu cầu tư vấn của bạn đã được gửi thành công.\nĐội ngũ JP Haven sẽ liên hệ với bạn trong thời gian sớm nhất.',
+        );
 
-      // 이전 타이머가 있으면 정리
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-
-      // 10초 후 폼 자동 초기화
-      timeoutRef.current = setTimeout(() => {
-        // 폼 리셋 (안전하게 처리 - reset 실패가 전체를 실패로 만들지 않도록)
-        try {
-          if (formRef.current) {
-            formRef.current.reset();
-            console.log('[InquiryForm] Form auto-reset after 10 seconds');
-          }
-        } catch (resetErr) {
-          // reset 실패는 무시 (문의는 이미 성공적으로 저장됨)
-          console.warn('[InquiryForm] Form reset failed (ignored):', resetErr);
+        // 이전 타이머가 있으면 정리
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
         }
-        timeoutRef.current = null;
-      }, 10000);
+
+        // 10초 후 폼 자동 초기화
+        timeoutRef.current = setTimeout(() => {
+          // 폼 리셋 (안전하게 처리 - reset 실패가 전체를 실패로 만들지 않도록)
+          try {
+            if (formRef.current) {
+              formRef.current.reset();
+              console.log('[InquiryForm] Form auto-reset after 10 seconds');
+            } else {
+              console.warn('[InquiryForm] formRef.current is null, cannot reset');
+            }
+          } catch (resetErr) {
+            // reset 실패는 무시 (문의는 이미 성공적으로 저장됨)
+            console.warn('[InquiryForm] Form reset failed (ignored):', resetErr);
+          }
+          timeoutRef.current = null;
+        }, 10000);
+      } else {
+        // submitInquiry가 success: false를 반환한 경우
+        console.warn('[InquiryForm] submitInquiry returned success: false');
+      }
     } catch (err: any) {
       // ⚠️ 진짜로 예외가 발생한 경우 - 콘솔 로그만 남기고 화면에는 에러 메시지를 표시하지 않음
       console.error('[InquiryForm] submit failed - 저장 중 오류가 발생했습니다.', err);
