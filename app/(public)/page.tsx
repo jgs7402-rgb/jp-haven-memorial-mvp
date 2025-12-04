@@ -1,5 +1,6 @@
 // app/(public)/page.tsx
 
+import Link from 'next/link';
 import { getRegionHeroImage } from '@/components/public/jangjiImages';
 import { InquiryForm } from '@/components/public/InquiryForm';
 import { SiteHeader } from '@/components/public/SiteHeader';
@@ -248,35 +249,44 @@ function FeaturedCemeteries({ cemeteries }: { cemeteries: Cemetery[] }) {
   return (
     <div className="mt-4 mb-6">
       <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible">
-        {items.map((cemetery) => (
-          <div
-            key={cemetery.id}
-            className="snap-center shrink-0 w-[260px] sm:w-auto section-card overflow-hidden p-6 transition-transform duration-150 ease-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:scale-95"
-          >
-            <div className="w-full h-40 bg-gray-100 rounded mb-4 overflow-hidden">
-              <img
-                src={cemetery.image}
-                alt={cemetery.nameVi}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <h3 className="text-lg font-semibold mb-1">
-              {cemetery.nameVi}
-            </h3>
-            <p className="text-sm text-gray-600 mb-2">
-              {cemetery.typeVi}
-            </p>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
-                {regionLabel(cemetery.region)}
-              </span>
-            </div>
-            <p className="text-xs text-gray-600">
-              Địa chỉ: {cemetery.addressVi}
-            </p>
-          </div>
-        ))}
+        {items.map((cemetery) => {
+          // 원본 cemetery 객체에서 id 찾기
+          const originalCemetery = cemeteries.find((c) => String(c.id) === cemetery.id);
+          const cemeteryId = originalCemetery?.id ?? Number(cemetery.id);
+
+          return (
+            <Link
+              key={cemetery.id}
+              href={`/jangji/${cemeteryId}`}
+              className="block snap-center shrink-0 w-[260px] sm:w-auto"
+            >
+              <div className="section-card overflow-hidden p-6 transition-transform duration-150 ease-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:scale-95 cursor-pointer">
+                <div className="w-full h-40 bg-gray-100 rounded mb-4 overflow-hidden">
+                  <img
+                    src={cemetery.image}
+                    alt={cemetery.nameVi}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold mb-1">
+                  {cemetery.nameVi}
+                </h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  {cemetery.typeVi}
+                </p>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
+                    {regionLabel(cemetery.region)}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-600">
+                  Địa chỉ: {cemetery.addressVi}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
