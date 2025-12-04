@@ -1,8 +1,8 @@
-// File: /Users/jopro/JP Haven-MVP2/jp-haven-memorial-mvp/app/(admin)/layout.tsx
-import * as entry from '../../../../app/(admin)/layout.js'
+// File: /Users/jopro/JP Haven-MVP2/jp-haven-memorial-mvp/app/(public)/layout.tsx
+import * as entry from '../../../../app/(public)/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../app/(admin)/layout.js')
+type TEntry = typeof import('../../../../app/(public)/layout.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{

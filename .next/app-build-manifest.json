@@ -5,15 +5,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/global-error.js"
     ],
-    "/(admin)/admin/inquiries/page": [
+    "/(public)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(admin)/admin/inquiries/page.js"
+      "static/chunks/app/(public)/page.js"
     ],
-    "/(admin)/layout": [
+    "/(public)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(admin)/layout.js"
+      "static/chunks/app/(public)/layout.js"
+    ],
+    "/(public)/error": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/error.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
