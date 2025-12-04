@@ -145,12 +145,19 @@ function mapRowToCemetery(row: any): Cemetery {
 }
 
 // 전체 목록 (Admin, /jangji 리스트에서 사용)
-export async function fetchCemeteries(): Promise<Cemetery[]> {
+export async function fetchCemeteries(
+  includeInactive = false,
+): Promise<Cemetery[]> {
   try {
-    const { data, error } = await supabaseServer
+    let query = supabaseServer
       .from('cemeteries')
-      .select('*')
-      .eq('is_active', true)
+      .select('*');
+
+    if (!includeInactive) {
+      query = query.eq('is_active', true);
+    }
+
+    const { data, error } = await query
       .order('region', { ascending: true })
       .order('name_vi', { ascending: true });
 

@@ -89,7 +89,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   footerMessageVi: 'Dịch vụ tư vấn do người Hàn Quốc vận hành',
   zaloUrl: '#',
   facebookUrl: '#',
-  siteNameVi: 'JP Haven Memorial',
+  siteNameVi: 'JP Haven',
   footerMenuTitleVi: 'Menu',
   footerMenuNghiaTrangVi: 'Nghĩa trang',
   footerMenuAboutVi: 'Giới thiệu công ty',
@@ -97,14 +97,17 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   footerSocialTitleVi: 'Mạng xã hội',
   footerCertLabelVi: 'Logo chứng nhận (placeholder)',
   footerCertLogoUrl: null,
-  seoDefaultTitleVi: 'JP Haven Memorial',
+  seoDefaultTitleVi:
+    'JP Haven – Tư vấn nghĩa trang & lưu tro cốt cho gia đình Việt Nam',
   seoDefaultDescriptionVi:
-    'JP Haven Memorial là nền tảng trung gian kết nối dịch vụ nghĩa trang và lưu tro cốt.',
-  ogDefaultTitleVi: 'JP Haven Memorial',
+    'JP Haven Memorial đồng hành cùng gia đình chuẩn bị nơi an nghỉ cuối cùng một cách bình tĩnh, minh bạch chi phí và dễ dàng so sánh các nghĩa trang tại Việt Nam.',
+  ogDefaultTitleVi:
+    'JP Haven – Tư vấn nghĩa trang & lưu tro cốt cho gia đình Việt Nam',
   ogDefaultDescriptionVi:
-    'Thông tin dịch vụ nghĩa trang minh bạch và hỗ trợ tận tình.',
-  ogDefaultImageUrl: null,
-  ogDefaultImageAltVi: 'Hình ảnh đại diện của JP Haven Memorial',
+    'Thông tin nghĩa trang minh bạch, hỗ trợ gia đình so sánh lựa chọn và chuẩn bị nơi an nghỉ cuối cùng mà không phải vội vàng.',
+  ogDefaultImageUrl: 'https://example.com/og-default.jpg', // TODO: set to the real OG image URL after uploading the image to production
+  ogDefaultImageAltVi:
+    'Không gian lưu tro cốt hiện đại, sáng và trang trọng của JP Haven Memorial tại Việt Nam.',
 };
 
 export function mapRowToSiteSettings(row: Record<string, any>): SiteSettings {

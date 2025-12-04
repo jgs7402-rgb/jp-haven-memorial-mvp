@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
 
   const title =
-    s.seoDefaultTitleVi || s.siteNameVi || 'JP Haven Memorial';
+    s.seoDefaultTitleVi || s.siteNameVi || 'JP Haven';
 
   const description =
     s.seoDefaultDescriptionVi ||
@@ -16,13 +16,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       default: title,
-      template: `%s | ${s.siteNameVi || 'JP Haven Memorial'}`,
+      template: `%s | ${s.siteNameVi || 'JP Haven'}`,
     },
     description,
     openGraph: {
       title: s.ogDefaultTitleVi || title,
       description: s.ogDefaultDescriptionVi || description,
-      siteName: s.siteNameVi || 'JP Haven Memorial',
+      siteName: s.siteNameVi || 'JP Haven',
       images: s.ogDefaultImageUrl
         ? [
             {

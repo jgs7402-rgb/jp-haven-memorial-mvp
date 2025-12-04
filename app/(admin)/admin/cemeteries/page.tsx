@@ -5,7 +5,8 @@ import CemeteriesAdminClient from './CemeteriesAdminClient';
 export const runtime = 'nodejs';
 
 export default async function AdminCemeteriesPage() {
-  const cemeteries: Cemetery[] = await fetchCemeteries();
+  // 관리자 페이지에서는 비활성 장지도 포함하여 조회
+  const cemeteries: Cemetery[] = await fetchCemeteries(true);
 
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-6">

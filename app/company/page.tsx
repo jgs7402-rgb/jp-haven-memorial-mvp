@@ -4,7 +4,7 @@ import { getSiteSettings, type SiteSettings } from '@/src/lib/siteSettings';
 import CompanyPageClient from './CompanyPageClient';
 
 export const metadata = {
-  title: 'Giới thiệu công ty | JP Haven Memorial',
+  title: 'Giới thiệu công ty | JP Haven',
   description:
     'JP Haven Memorial là nền tảng tang lễ số, kết hợp kinh nghiệm quản lý tang lễ Hàn Quốc với văn hoá tang lễ tại Việt Nam.',
 };

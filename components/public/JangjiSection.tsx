@@ -22,7 +22,7 @@ export default function JangjiSection({
   const filtered = cemeteries.filter((c) => c.region === region);
 
   // siteNameVi가 비어 있으면 기본값 사용
-  const siteName = siteSettings.siteNameVi || 'JP Haven Memorial';
+  const siteName = siteSettings.siteNameVi || 'JP Haven';
 
   return (
     <>

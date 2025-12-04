@@ -24,9 +24,9 @@ export async function generateMetadata({
     getSiteSettings(),
   ]);
 
-  const baseSiteName = settings.siteNameVi || 'JP Haven Memorial';
+  const baseSiteName = settings.siteNameVi || 'JP Haven';
   const fallbackTitle =
-    settings.seoDefaultTitleVi || settings.siteNameVi || 'JP Haven Memorial';
+    settings.seoDefaultTitleVi || settings.siteNameVi || 'JP Haven';
   const fallbackDescription =
     settings.seoDefaultDescriptionVi ||
     'JP Haven Memorial là nền tảng trung gian kết nối dịch vụ nghĩa trang và lưu tro cốt.';
@@ -109,7 +109,7 @@ export default async function JangjiDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const siteName = settings.siteNameVi || 'JP Haven Memorial';
+  const siteName = settings.siteNameVi || 'JP Haven';
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 space-y-8">

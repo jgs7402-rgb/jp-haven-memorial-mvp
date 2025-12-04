@@ -12,7 +12,7 @@ export const fetchCache = 'force-no-store';
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
 
-  const siteName = s.siteNameVi || 'JP Haven Memorial';
+  const siteName = s.siteNameVi || 'JP Haven';
 
   const title = `Thông tin nghĩa trang theo khu vực | ${siteName}`;
   const description =

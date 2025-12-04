@@ -65,7 +65,7 @@ export default async function HomePage() {
       : FALLBACK_TESTIMONIALS;
   const featuredCemeteries = await fetchFeaturedCemeteriesForHome();
 
-  const siteName = siteSettings?.siteNameVi ?? 'JP Haven Memorial';
+  const siteName = siteSettings?.siteNameVi ?? 'JP Haven';
 
   const heroTitle =
     siteSettings?.heroTitleVi ??

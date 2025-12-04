@@ -6,7 +6,7 @@ type SiteHeaderProps = {
   siteName?: string;
 };
 
-function SiteHeader({ siteName = 'JP Haven Memorial' }: SiteHeaderProps) {
+function SiteHeader({ siteName = 'JP Haven' }: SiteHeaderProps) {
   return (
     <header className="w-full border-b border-transparent">
       <div className="container mx-auto flex flex-col items-center gap-3 py-4 md:py-5 px-4">

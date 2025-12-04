@@ -15,7 +15,7 @@ export default function Footer({ settings }: FooterProps) {
     settings?.footerMessageVi ?? 'Dịch vụ tư vấn do người Hàn Quốc vận hành';
   const zaloUrl = settings?.zaloUrl ?? '#';
   const facebookUrl = settings?.facebookUrl ?? '#';
-  const siteName = settings?.siteNameVi ?? 'JP Haven Memorial';
+  const siteName = settings?.siteNameVi ?? 'JP Haven';
   const footerCertLabel =
     settings?.footerCertLabelVi ?? 'Logo chứng nhận (placeholder)';
 

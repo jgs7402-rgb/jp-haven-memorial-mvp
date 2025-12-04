@@ -25,9 +25,9 @@ export default function CompanyPageClient({ hotline, email }: Props) {
             {/* 제목 클릭 시 홈으로 이동 */}
             <Link
               href="/"
-              className="inline-block text-xs font-medium uppercase tracking-[0.2em] text-sky-600 hover:text-sky-700"
+              className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight"
             >
-              JP Haven Memorial
+              JP Haven
             </Link>
 
             <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">

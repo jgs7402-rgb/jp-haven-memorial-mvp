@@ -2,23 +2,13 @@
   "node": {
     "04375cfb6e16028dc9a348b13ad8487a5bb8cdff": {
       "workers": {
-        "app/(public)/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjopro%2FJP%20Haven-MVP2%2Fjp-haven-memorial-mvp%2Fapp%2F(public)%2Factions%2FsubmitInquiry.ts%22%2C%5B%22submitInquiry%22%5D%5D%5D&__client_imported__=true!",
-        "app/(public)/jangji/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjopro%2FJP%20Haven-MVP2%2Fjp-haven-memorial-mvp%2Fapp%2F(public)%2Factions%2FsubmitInquiry.ts%22%2C%5B%22submitInquiry%22%5D%5D%5D&__client_imported__=true!"
+        "app/(public)/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjopro%2FJP%20Haven-MVP2%2Fjp-haven-memorial-mvp%2Fapp%2F(public)%2Factions%2FsubmitInquiry.ts%22%2C%5B%22submitInquiry%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/(public)/page": "action-browser",
-        "app/(public)/jangji/[id]/page": "action-browser"
-      }
-    },
-    "eb03153dea4f2dde9f0e726b85bca27b04f3f4c7": {
-      "workers": {
-        "app/(admin)/admin/inquiries/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjopro%2FJP%20Haven-MVP2%2Fjp-haven-memorial-mvp%2Fapp%2F(admin)%2Fadmin%2Finquiries%2Factions.ts%22%2C%5B%22updateInquiryStatusAction%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/(admin)/admin/inquiries/page": "action-browser"
+        "app/(public)/page": "action-browser"
       }
     }
   },
   "edge": {},
-  "encryptionKey": "E2DH2Z5uaRcgAKlXSuMg6+a8jJxijGHvtYpeoY5GoxM="
+  "encryptionKey": "Z4e8KQuL/+JRYNVP+WlRXpz1TpF31CDwq7evx3h50tc="
 }

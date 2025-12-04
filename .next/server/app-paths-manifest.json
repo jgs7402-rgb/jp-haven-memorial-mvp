@@ -1,7 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/company/page": "app/company/page.js",
   "/(public)/page": "app/(public)/page.js",
   "/(public)/jangji/page": "app/(public)/jangji/page.js",
-  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js"
+  "/(admin)/admin/homepage-images/page": "app/(admin)/admin/homepage-images/page.js"
 }

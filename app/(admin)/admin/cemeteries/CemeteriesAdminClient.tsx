@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Cemetery, CemeteryImage, Region } from '@/src/lib/cemeteries';
+import { createCemeteryAction, deleteCemeteryAction } from './actions';
 
 type Props = {
   initialCemeteries: Cemetery[];
@@ -15,8 +17,11 @@ type ExtraImageForm = {
 };
 
 export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [rows, setRows] = useState(initialCemeteries);
   const [savingId, setSavingId] = useState<number | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const [extraImages, setExtraImages] = useState<
     Record<number, ExtraImageForm[]>
   >(() => {
@@ -181,12 +186,161 @@ export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
     }
   }
 
-  if (rows.length === 0) {
-    return <p className="text-sm text-slate-600">등록된 장지가 없습니다.</p>;
+  async function handleCreate(form: HTMLFormElement) {
+    const formData = new FormData(form);
+    const result = await createCemeteryAction(formData);
+
+    if (!result.ok) {
+      alert(result.error ?? '장지 생성에 실패했습니다.');
+      return;
+    }
+
+    setIsCreating(false);
+    form.reset();
+    router.refresh();
+  }
+
+  async function handleDelete(id: number) {
+    const confirmed = window.confirm(
+      '정말 이 장지를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await deleteCemeteryAction(id);
+
+      if (!result.ok) {
+        alert(result.error ?? '장지 삭제에 실패했습니다.');
+        return;
+      }
+
+      router.refresh();
+    });
   }
 
   return (
     <section className="space-y-4">
+      {/* 장지 추가 버튼 및 폼 */}
+      <div className="flex items-center justify-between">
+        <div></div>
+        <button
+          type="button"
+          onClick={() => setIsCreating(!isCreating)}
+          className="rounded-xl bg-sky-600 px-5 py-2 text-sm font-semibold text-white shadow-soft hover:bg-sky-700"
+        >
+          {isCreating ? '취소' : '장지 추가'}
+        </button>
+      </div>
+
+      {isCreating && (
+        <form
+          className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleCreate(e.currentTarget);
+          }}
+        >
+          <h2 className="text-lg font-semibold text-slate-900">새 장지 추가</h2>
+          <div className="grid gap-3 md:grid-cols-3">
+            <div className="space-y-1">
+              <label className="text-xs text-slate-600">
+                이름 (VI) <span className="text-red-500">*</span>
+              </label>
+              <input
+                name="nameVi"
+                required
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-slate-600">
+                지역 <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="region"
+                required
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+              >
+                <option value="">선택하세요</option>
+                <option value="Bắc">Bắc</option>
+                <option value="Trung">Trung</option>
+                <option value="Nam">Nam</option>
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-slate-600">
+                타입 코드 <span className="text-red-500">*</span>
+              </label>
+              <input
+                name="typeCode"
+                required
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="space-y-1">
+              <label className="text-xs text-slate-600">주소 (VI)</label>
+              <input
+                name="addressVi"
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-slate-600">장점 (VI)</label>
+              <textarea
+                name="prosVi"
+                rows={2}
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-slate-600">추가 설명 (VI)</label>
+            <textarea
+              name="extraInfoVi"
+              rows={3}
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-slate-600">이미지 URL</label>
+            <input
+              name="imageUrl"
+              type="url"
+              placeholder="https://..."
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+            />
+          </div>
+
+          <div className="flex items-center justify-end gap-3">
+            <button
+              type="button"
+              onClick={() => setIsCreating(false)}
+              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700 disabled:opacity-60"
+            >
+              {isPending ? '저장 중...' : '저장'}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {rows.length === 0 && !isCreating && (
+        <p className="text-sm text-slate-600">등록된 장지가 없습니다.</p>
+      )}
       {rows.map((cemetery) => (
         <form
           key={cemetery.id}
@@ -196,6 +350,19 @@ export default function CemeteriesAdminClient({ initialCemeteries }: Props) {
             await handleSave(cemetery.id, e.currentTarget);
           }}
         >
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-slate-900">
+              ID: {cemetery.id} - {cemetery.nameVi}
+            </h3>
+            <button
+              type="button"
+              onClick={() => handleDelete(cemetery.id)}
+              disabled={isPending || savingId === cemetery.id}
+              className="text-xs text-red-500 hover:underline disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              삭제
+            </button>
+          </div>
           <div className="grid gap-3 md:grid-cols-3">
             <div className="space-y-1">
               <label className="text-xs text-slate-600">이름 (VI)</label>
