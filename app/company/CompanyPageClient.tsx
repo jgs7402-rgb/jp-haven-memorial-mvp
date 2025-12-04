@@ -25,7 +25,7 @@ export default function CompanyPageClient({ hotline, email }: Props) {
             {/* 제목 클릭 시 홈으로 이동 */}
             <Link
               href="/"
-              className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight"
+              className="text-lg sm:text-xl font-semibold text-sky-600 hover:text-sky-700 transition-colors"
             >
               JP Haven
             </Link>

@@ -8,30 +8,66 @@ type SiteHeaderProps = {
 
 function SiteHeader({ siteName = 'JP Haven' }: SiteHeaderProps) {
   return (
-    <header className="w-full border-b border-transparent">
-      <div className="container mx-auto flex flex-col items-center gap-3 py-4 md:py-5 px-4">
-        {/* Logo */}
+    <>
+      {/* Header bar (Toss-style) */}
+      <header className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-center px-4 sm:h-16 sm:justify-between sm:px-6 lg:px-8">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center"
+          >
+            <span className="text-xl sm:text-2xl font-semibold text-sky-600 hover:text-sky-700 transition-colors">
+              {siteName}
+            </span>
+          </Link>
+
+          {/* Desktop Navigation - inside header bar */}
+          <nav className="hidden sm:flex items-center gap-6 text-sm sm:text-base">
+            <Link
+              href="/"
+              className="font-medium text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              Trang chủ
+            </Link>
+            <Link
+              href="/jangji"
+              className="font-medium text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              Nghĩa trang
+            </Link>
+            <Link
+              href="/company"
+              className="font-medium text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              Giới thiệu công ty
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* Mobile Navigation - below header bar */}
+      <nav className="flex justify-center gap-6 py-3 text-sm font-medium text-slate-600 sm:hidden border-b border-slate-50">
         <Link
           href="/"
-          className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center"
+          className="text-slate-500 hover:text-slate-700 transition-colors"
         >
-          {siteName}
+          Trang chủ
         </Link>
-
-        {/* Navigation - always visible, centered */}
-        <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm sm:text-base md:text-lg text-gray-700 font-medium">
-          <Link href="/" className="hover:text-sky-600 px-3 py-1 rounded-md hover:bg-sky-50">
-            Trang chủ
-          </Link>
-          <Link href="/jangji" className="hover:text-sky-600 px-3 py-1 rounded-md hover:bg-sky-50">
-            Nghĩa trang
-          </Link>
-          <Link href="/company" className="hover:text-sky-600 px-3 py-1 rounded-md hover:bg-sky-50">
-            Giới thiệu công ty
-          </Link>
-        </nav>
-      </div>
-    </header>
+        <Link
+          href="/jangji"
+          className="text-slate-500 hover:text-slate-700 transition-colors"
+        >
+          Nghĩa trang
+        </Link>
+        <Link
+          href="/company"
+          className="text-slate-500 hover:text-slate-700 transition-colors"
+        >
+          Giới thiệu công ty
+        </Link>
+      </nav>
+    </>
   );
 }
 

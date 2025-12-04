@@ -37,7 +37,7 @@ export default async function JangjiPage() {
   const siteSettings = await getSiteSettings();
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
+    <main className="mx-auto max-w-6xl px-4">
       <JangjiSection cemeteries={cemeteries} siteSettings={siteSettings} />
     </main>
   );

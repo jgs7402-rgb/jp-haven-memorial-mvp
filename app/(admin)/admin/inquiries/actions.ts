@@ -30,3 +30,4 @@ export async function updateInquiryStatusAction(formData: FormData) {
   revalidatePath('/admin/inquiries');
 }
 
+

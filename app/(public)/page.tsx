@@ -107,7 +107,7 @@ export default async function HomePage() {
             {heroCtaPrimary ? (
               <a
                 href={hotlineHref}
-                className="px-6 py-3 bg-sky-600 text-white rounded-lg"
+                className="px-6 py-3 bg-sky-600 text-white rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
               >
                 {heroCtaPrimary}
               </a>
@@ -116,7 +116,7 @@ export default async function HomePage() {
             {heroCtaSecondary ? (
               <a
                 href="#inquiry"
-                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
+                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
               >
                 {heroCtaSecondary}
               </a>
@@ -127,7 +127,7 @@ export default async function HomePage() {
                 href="https://zalo.me/3258467487025854421"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg"
+                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
               >
                 {heroCtaTertiary}
               </a>
@@ -157,7 +157,7 @@ export default async function HomePage() {
         <div className="text-center">
           <a
             href="/jangji"
-            className="px-6 py-3 bg-sky-600 text-white rounded-lg inline-block"
+            className="px-6 py-3 bg-sky-600 text-white rounded-lg inline-block shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
           >
             Xem tất cả
           </a>
@@ -251,7 +251,7 @@ function FeaturedCemeteries({ cemeteries }: { cemeteries: Cemetery[] }) {
         {items.map((cemetery) => (
           <div
             key={cemetery.id}
-            className="snap-center shrink-0 w-[260px] sm:w-auto section-card overflow-hidden p-6"
+            className="snap-center shrink-0 w-[260px] sm:w-auto section-card overflow-hidden p-6 transition-transform duration-150 ease-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:scale-95"
           >
             <div className="w-full h-40 bg-gray-100 rounded mb-4 overflow-hidden">
               <img

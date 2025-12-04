@@ -1,6 +1,5 @@
 {
-  "/company/page": "app/company/page.js",
+  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js",
   "/(public)/page": "app/(public)/page.js",
-  "/(public)/jangji/page": "app/(public)/jangji/page.js",
-  "/(admin)/admin/homepage-images/page": "app/(admin)/admin/homepage-images/page.js"
+  "/(public)/jangji/page": "app/(public)/jangji/page.js"
 }
