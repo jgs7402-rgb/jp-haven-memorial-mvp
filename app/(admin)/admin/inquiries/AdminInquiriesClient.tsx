@@ -5,7 +5,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import type { InquiryRow } from '@/src/lib/inquiries';
-import { updateInquiryStatusAction } from './actions';
+import { updateInquiryStatusAction, deleteInquiryAction } from './actions';
 
 type Props = {
   inquiries: InquiryRow[];
@@ -32,10 +32,11 @@ const STATUS_COLORS_CARD: Record<string, string> = {
 type InquiryCardProps = {
   inquiry: InquiryRow;
   onStatusChange: (id: number, status: string) => void;
+  onDelete: (id: number) => void;
   isPending: boolean;
 };
 
-function InquiryCard({ inquiry, onStatusChange, isPending }: InquiryCardProps) {
+function InquiryCard({ inquiry, onStatusChange, onDelete, isPending }: InquiryCardProps) {
   const inquiryContent = inquiry.note || inquiry.message || null;
   const hasBoth = inquiry.note && inquiry.message;
 
@@ -100,6 +101,18 @@ function InquiryCard({ inquiry, onStatusChange, isPending }: InquiryCardProps) {
           <span className="font-medium">메모:</span> {inquiry.memo}
         </div>
       )}
+
+      {/* 삭제 버튼 */}
+      <div className="flex justify-end pt-2 border-t border-slate-100">
+        <button
+          type="button"
+          onClick={() => onDelete(inquiry.id)}
+          disabled={isPending}
+          className="text-xs text-red-600 hover:text-red-700 hover:underline disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          삭제
+        </button>
+      </div>
     </div>
   );
 }
@@ -109,6 +122,18 @@ export function AdminInquiriesClient({ inquiries }: Props) {
   const [isPending, startTransition] = useTransition();
   const [viewMode, setViewMode] = useState<'table' | 'card'>('table');
 
+  // 상태별로 문의를 분류: 신규 → 진행중 → 완료 순서
+  const newInquiries = inquiries.filter((q) => q.status === 'new');
+  const inProgressInquiries = inquiries.filter((q) => q.status === 'in_progress');
+  const doneInquiries = inquiries.filter((q) => q.status === 'done');
+
+  // 최종 정렬된 문의 목록: 신규 → 진행중 → 완료
+  const orderedInquiries = [
+    ...newInquiries,
+    ...inProgressInquiries,
+    ...doneInquiries,
+  ];
+
   function handleStatusChange(id: number, nextStatus: string) {
     startTransition(async () => {
       const formData = new FormData();
@@ -116,6 +141,22 @@ export function AdminInquiriesClient({ inquiries }: Props) {
       formData.append('status', nextStatus);
       await updateInquiryStatusAction(formData);
       router.refresh();
+    });
+  }
+
+  function handleDelete(id: number) {
+    if (!confirm('정말 이 문의를 삭제할까요?')) {
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        await deleteInquiryAction(id);
+        router.refresh();
+      } catch (err) {
+        console.error('[AdminInquiriesClient] deleteInquiry failed =', err);
+        alert('삭제 중 오류가 발생했습니다.');
+      }
     });
   }
 
@@ -146,7 +187,7 @@ export function AdminInquiriesClient({ inquiries }: Props) {
       {/* 헤더: 통계 + 뷰 모드 토글 */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-slate-500">
-          총 {inquiries.length}개의 문의가 있습니다.
+          총 {inquiries.length}개의 문의가 있습니다. (신규: {newInquiries.length}, 진행중: {inProgressInquiries.length}, 완료: {doneInquiries.length})
         </p>
 
         {/* 뷰 모드 토글 */}
@@ -191,10 +232,11 @@ export function AdminInquiriesClient({ inquiries }: Props) {
                 <th className="px-3 py-2 text-left">상태</th>
                 <th className="px-3 py-2 text-left">메모</th>
                 <th className="px-3 py-2 text-left">생성일</th>
+                <th className="px-3 py-2 text-left">작업</th>
               </tr>
             </thead>
             <tbody>
-              {inquiries.map((inq) => (
+              {orderedInquiries.map((inq) => (
                 <tr key={inq.id} className="border-t border-slate-100">
                   <td className="px-3 py-2">{inq.id}</td>
                   <td className="px-3 py-2">{inq.name}</td>
@@ -229,6 +271,16 @@ export function AdminInquiriesClient({ inquiries }: Props) {
                   <td className="px-3 py-2">
                     {new Date(inq.created_at).toLocaleString('ko-KR')}
                   </td>
+                  <td className="px-3 py-2">
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(inq.id)}
+                      disabled={isPending}
+                      className="text-xs text-red-600 hover:text-red-700 hover:underline disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      삭제
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -239,11 +291,12 @@ export function AdminInquiriesClient({ inquiries }: Props) {
       {/* 카드 뷰 */}
       {viewMode === 'card' && (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {inquiries.map((inq) => (
+          {orderedInquiries.map((inq) => (
             <InquiryCard
               key={inq.id}
               inquiry={inq}
               onStatusChange={handleStatusChange}
+              onDelete={handleDelete}
               isPending={isPending}
             />
           ))}

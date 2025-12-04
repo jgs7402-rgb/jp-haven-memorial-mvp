@@ -1,12 +1,23 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useRef, useEffect, FormEvent } from 'react';
 import { submitInquiry } from '@/app/(public)/actions/submitInquiry';
 
 export function InquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,15 +47,26 @@ export function InquiryForm() {
         'Yêu cầu tư vấn của bạn đã được gửi thành công.\nĐội ngũ JP Haven sẽ liên hệ với bạn trong thời gian sớm nhất.',
       );
 
-      // 폼 리셋 (안전하게 처리 - reset 실패가 전체를 실패로 만들지 않도록)
-      try {
-        if (e.currentTarget) {
-          e.currentTarget.reset();
-        }
-      } catch (resetErr) {
-        // reset 실패는 무시 (문의는 이미 성공적으로 저장됨)
-        console.warn('[InquiryForm] Form reset failed (ignored):', resetErr);
+      // 이전 타이머가 있으면 정리
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
+
+      // 10초 후 폼 자동 초기화
+      timeoutRef.current = setTimeout(() => {
+        // 폼 리셋 (안전하게 처리 - reset 실패가 전체를 실패로 만들지 않도록)
+        try {
+          if (formRef.current) {
+            formRef.current.reset();
+            console.log('[InquiryForm] Form auto-reset after 10 seconds');
+          }
+        } catch (resetErr) {
+          // reset 실패는 무시 (문의는 이미 성공적으로 저장됨)
+          console.warn('[InquiryForm] Form reset failed (ignored):', resetErr);
+        }
+        timeoutRef.current = null;
+      }, 10000);
     } catch (err: any) {
       // ⚠️ 진짜로 예외가 발생한 경우 - 콘솔 로그만 남기고 화면에는 에러 메시지를 표시하지 않음
       console.error('[InquiryForm] submit failed - 저장 중 오류가 발생했습니다.', err);
@@ -57,7 +79,7 @@ export function InquiryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="section-card p-6 space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="section-card p-6 space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="text-sm font-medium">
           Họ và tên*
