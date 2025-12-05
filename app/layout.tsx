@@ -1,5 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { getSiteSettings } from '@/src/lib/siteSettings';
 
@@ -7,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
 
   const title =
-    s.seoDefaultTitleVi || s.siteNameVi || 'JP Haven';
+    s.seoDefaultTitleVi || s.siteNameVi || 'JP Haven Memorial';
 
   const description =
     s.seoDefaultDescriptionVi ||
@@ -16,13 +17,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       default: title,
-      template: `%s | ${s.siteNameVi || 'JP Haven'}`,
+      template: `%s | ${s.siteNameVi || 'JP Haven Memorial'}`,
     },
     description,
     openGraph: {
       title: s.ogDefaultTitleVi || title,
       description: s.ogDefaultDescriptionVi || description,
-      siteName: s.siteNameVi || 'JP Haven',
+      siteName: s.siteNameVi || 'JP Haven Memorial',
       images: s.ogDefaultImageUrl
         ? [
             {

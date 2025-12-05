@@ -4,7 +4,7 @@ import type { Cemetery, Region } from '@/src/lib/cemeteries';
 import { getJangjiImages } from './jangjiImages';
 
 type JangjiListProps = {
-  cemeteries: Cemetery[];
+  cemeteries: Cemetery[]; // 🔹 일단 기본 Cemetery만 사용
 };
 
 function regionLabel(region: Region) {
@@ -17,7 +17,9 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
   if (cemeteries.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Không có nghĩa trang trong khu vực đã chọn.</p>
+        <p className="text-gray-500">
+          Không có nghĩa trang trong khu vực đã chọn.
+        </p>
       </div>
     );
   }
@@ -37,7 +39,12 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
             key={cemetery.id}
             className="section-card overflow-hidden p-6 transition-transform duration-150 ease-out hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:scale-95"
           >
-            <div className="w-full h-48 bg-gray-100 rounded mb-4 overflow-hidden">
+            <div className="w-full h-48 bg-gray-100 rounded mb-4 overflow-hidden relative">
+              {/* 🔹 지금은 모든 장지에 MẪU 표시 (나중에 isDemo 연결해서 조건 줄 수 있음) */}
+              <span className="absolute left-2 top-2 inline-block rounded bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700">
+                MẪU
+              </span>
+
               <img
                 src={cemetery.imageUrl ?? getJangjiImages(cemetery.id).main}
                 alt={cemetery.nameVi}
@@ -66,7 +73,9 @@ export function JangjiList({ cemeteries }: JangjiListProps) {
                 <span className="font-semibold text-green-700">✓ Ưu điểm:</span>{' '}
                 <span className="text-gray-800">{cemetery.prosVi}</span>
               </p>
-              <p className="text-gray-700 line-clamp-3">{cemetery.extraInfoVi}</p>
+              <p className="text-gray-700 line-clamp-3">
+                {cemetery.extraInfoVi}
+              </p>
             </div>
 
             <div className="pt-4">

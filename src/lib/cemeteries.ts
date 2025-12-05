@@ -51,6 +51,7 @@ export type CemeteryUpdateInput = {
   isFeaturedMain: boolean;
   featuredOrderMain: number | null;
   imageUrl: string | null;
+  isDemo?: boolean | null;
 };
 
 export type UpdateCemeteryAdminInput = CemeteryUpdateInput;

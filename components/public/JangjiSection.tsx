@@ -36,6 +36,11 @@ export default function JangjiSection({
             <p className="text-lg text-gray-600">
               Chọn khu vực để xem danh sách nghĩa trang
             </p>
+            {/* 🔹 샘플 데이터 안내문 */}
+            <p className="text-sm text-gray-500">
+              Hiện tại, các nghĩa trang hiển thị trên website chỉ là dữ liệu mẫu
+              (demo) để minh họa cách hoạt động của JP Haven.
+            </p>
           </div>
 
           {/* 지역 선택 슬라이더 */}
