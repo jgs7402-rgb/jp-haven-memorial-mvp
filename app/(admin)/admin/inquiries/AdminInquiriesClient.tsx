@@ -42,13 +42,16 @@ function InquiryCard({ inquiry, onStatusChange, onDelete, isPending }: InquiryCa
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-3">
-      {/* Header: 이름, 전화번호, 상태 */}
+      {/* Header: 이름, 전화번호, 이메일, 상태 */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-slate-900 truncate">
             {inquiry.name}
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">{inquiry.phone}</p>
+          {inquiry.email && (
+            <p className="text-xs text-slate-500 mt-0.5">{inquiry.email}</p>
+          )}
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <select
@@ -226,6 +229,7 @@ export function AdminInquiriesClient({ inquiries }: Props) {
                 <th className="px-3 py-2 text-left">ID</th>
                 <th className="px-3 py-2 text-left">이름</th>
                 <th className="px-3 py-2 text-left">전화번호</th>
+                <th className="px-3 py-2 text-left">이메일</th>
                 <th className="px-3 py-2 text-left">지역</th>
                 <th className="px-3 py-2 text-left">예산</th>
                 <th className="px-3 py-2 text-left">문의 내용</th>
@@ -241,6 +245,7 @@ export function AdminInquiriesClient({ inquiries }: Props) {
                   <td className="px-3 py-2">{inq.id}</td>
                   <td className="px-3 py-2">{inq.name}</td>
                   <td className="px-3 py-2">{inq.phone}</td>
+                  <td className="px-3 py-2">{inq.email ?? '-'}</td>
                   <td className="px-3 py-2">{inq.region ?? '-'}</td>
                   <td className="px-3 py-2">{inq.budget ?? '-'}</td>
                   <td className="px-3 py-2 max-w-xs">

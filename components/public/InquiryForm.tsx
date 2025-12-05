@@ -31,6 +31,7 @@ export function InquiryForm() {
     const inquiryData = {
       name: formData.get('name')?.toString().trim() ?? '',
       phone: formData.get('phone')?.toString().trim() ?? '',
+      email: formData.get('email')?.toString().trim() || null,
       region: formData.get('region')?.toString().trim() || null,
       budget: formData.get('budget')?.toString().trim() || null,
       note: formData.get('note')?.toString().trim() || null,
@@ -106,6 +107,16 @@ export function InquiryForm() {
           />
         </label>
       </div>
+
+      <label className="text-sm font-medium">
+        Email
+        <input
+          name="email"
+          type="email"
+          className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+          placeholder="Nhập email của bạn"
+        />
+      </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="text-sm font-medium">

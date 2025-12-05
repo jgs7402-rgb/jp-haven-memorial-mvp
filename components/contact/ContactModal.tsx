@@ -36,23 +36,44 @@ export default function ContactModal({
     setIsSubmitting(true);
     setMessage(null);
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    // JSON payload 구성
+    const payload = {
+      name: formData.get('name')?.toString().trim() ?? '',
+      phone: formData.get('phone')?.toString().trim() ?? '',
+      email: formData.get('email')?.toString().trim() ?? '',
+      region: formData.get('region')?.toString().trim() || null,
+      message: formData.get('message')?.toString().trim() ?? '',
+      source: formData.get('source')?.toString().trim() ?? 'contact-modal',
+    };
 
     try {
       const res = await fetch(action, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
 
-      const json = (await res.json()) as
-        | { ok: boolean; message?: string; error?: string }
+      const data = (await res.json()) as
+        | {
+            success: boolean;
+            emailSent?: boolean;
+            message?: string;
+            error?: string | null;
+          }
         | null;
 
-      if (!res.ok || !json?.ok) {
-        throw new Error(json?.error ?? '전송 중 오류가 발생했습니다.');
+      if (!res.ok || !data?.success) {
+        console.error('[ContactModal] submit error response =', data);
+        throw new Error(data?.error ?? data?.message ?? '전송 중 오류가 발생했습니다.');
       }
 
-      setMessage(json.message ?? 'Thông tin đã được ghi nhận.');
+      console.log('[ContactModal] SUCCESS: contact submitted', data);
+      setMessage(data.message ?? 'Thông tin đã được ghi nhận.');
       setTimeout(() => {
         onClose();
         setMessage(null);
@@ -124,6 +145,17 @@ export default function ContactModal({
                 defaultValue={defaultEmail ?? ''}
               />
             </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-slate-700">
+              Khu vực mong muốn
+            </label>
+            <input
+              name="region"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+              placeholder="Bắc / Trung / Nam"
+            />
           </div>
 
           <div className="space-y-1">

@@ -9,6 +9,7 @@ import { sendAdminInquiryEmail } from '@/src/lib/email/sendAdminInquiryEmail';
 type InquiryFormInput = {
   name: string;
   phone: string;
+  email?: string | null;
   region?: string | null;
   budget?: string | null;
   note?: string | null;
@@ -24,7 +25,7 @@ export async function submitInquiry(formData: InquiryFormInput) {
       .insert({
         name: formData.name,
         phone: formData.phone,
-        email: null,
+        email: formData.email || null,
         region: formData.region || null,
         budget: formData.budget || null,
         note: formData.note || null,
@@ -49,6 +50,7 @@ export async function submitInquiry(formData: InquiryFormInput) {
       await sendAdminInquiryEmail({
         name: data.name,
         phone: data.phone,
+        email: data.email,
         budget: data.budget,
         note: data.note,
       });

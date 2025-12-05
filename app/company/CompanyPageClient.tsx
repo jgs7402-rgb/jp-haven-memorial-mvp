@@ -141,7 +141,6 @@ export default function CompanyPageClient({ hotline, email }: Props) {
       <ContactModal
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
-        defaultEmail={effectiveEmail}
         action="/api/contact"
         source="company-page-modal"
       />

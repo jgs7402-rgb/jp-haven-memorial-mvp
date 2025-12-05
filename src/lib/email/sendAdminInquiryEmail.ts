@@ -6,12 +6,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 type AdminInquiryEmailPayload = {
   name: string;
   phone: string;
+  email?: string | null;
   budget?: string | null;
   note?: string | null;
 };
 
 export async function sendAdminInquiryEmail(payload: AdminInquiryEmailPayload) {
-  const { name, phone, budget, note } = payload;
+  const { name, phone, email, budget, note } = payload;
 
   // TODO: from 주소는 Resend에서 인증한 도메인으로 변경 필요
   // 예: 'JP Haven <no-reply@yourdomain.com>' 또는 'no-reply@yourdomain.com'
@@ -24,6 +25,7 @@ export async function sendAdminInquiryEmail(payload: AdminInquiryEmailPayload) {
     <h2>JP Haven - 새로운 문의가 도착했습니다.</h2>
     <p><strong>이름:</strong> ${name}</p>
     <p><strong>전화번호:</strong> ${phone}</p>
+    <p><strong>이메일:</strong> ${email ?? '-'}</p>
     <p><strong>예산:</strong> ${budget ?? '-'}</p>
     <p><strong>메모:</strong></p>
     <p>${(note ?? '').replace(/\n/g, '<br />')}</p>

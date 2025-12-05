@@ -8,13 +8,14 @@ export async function POST(req: Request) {
   let error: string | null = null;
 
   try {
-    const formData = await req.formData();
+    const body = await req.json();
 
-    const name = formData.get('name')?.toString().trim() ?? '';
-    const phone = formData.get('phone')?.toString().trim() ?? '';
-    const email = formData.get('email')?.toString().trim() ?? '';
-    const message = formData.get('message')?.toString().trim() ?? '';
-    const source = formData.get('source')?.toString().trim() ?? 'contact-modal';
+    const name = (body.name as string)?.trim() ?? '';
+    const phone = (body.phone as string)?.trim() ?? '';
+    const email = (body.email as string)?.trim() ?? '';
+    const region = (body.region as string)?.trim() || null;
+    const message = (body.message as string)?.trim() ?? '';
+    const source = (body.source as string)?.trim() ?? 'contact-modal';
 
     // 필수값 검증
     if (!name || !phone || !message) {
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
       name,
       phone,
       email: email || null,
-      region: null,
+      region: region || null,
       budget: null,
       note: null,
       message: message || null,
@@ -60,6 +61,7 @@ export async function POST(req: Request) {
       await sendAdminInquiryEmail({
         name: result.data!.name,
         phone: result.data!.phone,
+        email: result.data!.email,
         budget: null, // contact-modal에서는 budget이 없음
         note: result.data!.message || result.data!.note || null,
       });
