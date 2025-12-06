@@ -2,51 +2,15 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
-import { getSiteSettings } from '@/src/lib/siteSettings';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const s = await getSiteSettings();
+export const metadata: Metadata = {
+  title: 'JP Haven Memorial',
+  description:
+    'JP Haven Memorial là nền tảng tang lễ số, giúp gia đình tìm kiếm thông tin nghĩa trang và dịch vụ an táng một cách minh bạch và nhân văn.',
+};
 
-  const title =
-    s.seoDefaultTitleVi || s.siteNameVi || 'JP Haven Memorial';
-
-  const description =
-    s.seoDefaultDescriptionVi ||
-    'JP Haven Memorial là nền tảng trung gian kết nối dịch vụ nghĩa trang và lưu tro cốt.';
-
-  return {
-    title: {
-      default: title,
-      template: `%s | ${s.siteNameVi || 'JP Haven Memorial'}`,
-    },
-    description,
-    openGraph: {
-      title: s.ogDefaultTitleVi || title,
-      description: s.ogDefaultDescriptionVi || description,
-      siteName: s.siteNameVi || 'JP Haven Memorial',
-      images: s.ogDefaultImageUrl
-        ? [
-            {
-              url: s.ogDefaultImageUrl,
-              alt:
-                s.ogDefaultImageAltVi ||
-                'Hình ảnh đại diện của JP Haven Memorial',
-            },
-          ]
-        : [],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: s.ogDefaultTitleVi || title,
-      description: s.ogDefaultDescriptionVi || description,
-      images: s.ogDefaultImageUrl ? [s.ogDefaultImageUrl] : [],
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-  };
-}
+// 🔹 GA4 측정 ID를 환경변수에서 읽어옴 (반드시 함수 위에 선언)
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export default function RootLayout({
   children,
@@ -55,7 +19,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className="text-slate-900">{children}</body>
+      <head>
+        {GA_MEASUREMENT_ID && (
+          <>
+            {/* GA4 gtag.js 로더 */}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            {/* GA4 초기 설정 */}
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}');
+              `}
+            </Script>
+          </>
+        )}
+      </head>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }
