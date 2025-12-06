@@ -2,6 +2,7 @@
 'use client';
 
 import type { SiteSettings } from '@/src/lib/siteSettings';
+import { trackEvent } from '@/src/lib/ga';
 
 type FooterProps = {
   settings?: SiteSettings | null;
@@ -48,7 +49,21 @@ export default function Footer({ settings }: FooterProps) {
           {/* 연락처 */}
           <div>
             <h3 className="mb-4 font-bold">Liên hệ</h3>
-            <p className="text-sm">Hotline: {hotlineNumber}</p>
+            <p className="text-sm">
+              Hotline:{' '}
+              {hotlineNumber ? (
+                <a
+                  href={`tel:${hotlineNumber.replace(/\s+/g, '')}`}
+                  onClick={() => {
+                    trackEvent('전화걸기_클릭', { 위치: 'footer_hotline' });
+                  }}
+                >
+                  {hotlineNumber}
+                </a>
+              ) : (
+                hotlineNumber
+              )}
+            </p>
             <p className="text-sm">Email: {supportEmail}</p>
             <p className="text-sm">{businessHours}</p>
           </div>
@@ -58,7 +73,14 @@ export default function Footer({ settings }: FooterProps) {
             <h3 className="mb-4 font-bold">Mạng xã hội</h3>
             <ul className="space-y-2">
               <li>
-                <a href={zaloUrl || '#'}>Zalo</a>
+                <a
+                  href={zaloUrl || '#'}
+                  onClick={() => {
+                    trackEvent('Zalo상담_클릭', { 위치: 'footer_zalo' });
+                  }}
+                >
+                  Zalo
+                </a>
               </li>
               <li>
                 <a href={facebookUrl || '#'}>Facebook</a>

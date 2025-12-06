@@ -6,6 +6,7 @@ import { InquiryForm } from '@/components/public/InquiryForm';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
 import Footer from '@/components/public/Footer';
+import HeroSection from '@/components/public/HeroSection';
 import type { Region, Cemetery } from '@/src/lib/cemeteries';
 import { fetchFeaturedCemeteriesForHome } from '@/src/lib/cemeteries';
 import { getSiteSettings } from '@/src/lib/siteSettings';
@@ -99,55 +100,18 @@ export default async function HomePage() {
       {/* ========================= */}
       {/* Hero 섹션 */}
       {/* ========================= */}
-      <section className="container mx-auto pt-10 pb-12 md:pt-12 md:pb-14">
-        <div className="max-w-md md:max-w-2xl mx-auto text-center space-y-6">
-          <h1 className="text-4xl font-bold">{heroTitle}</h1>
-          <p className="text-lg text-gray-600">{heroSubtitle}</p>
-
-          <div className="flex gap-4 justify-center">
-            {heroCtaPrimary ? (
-              <a
-                href={hotlineHref}
-                className="px-6 py-3 bg-sky-600 text-white rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
-              >
-                {heroCtaPrimary}
-              </a>
-            ) : null}
-
-            {heroCtaSecondary ? (
-              <a
-                href="#inquiry"
-                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
-              >
-                {heroCtaSecondary}
-              </a>
-            ) : null}
-
-            {heroCtaTertiary ? (
-              <a
-                href="https://zalo.me/3258467487025854421"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
-              >
-                {heroCtaTertiary}
-              </a>
-            ) : null}
-          </div>
-
-          <p className="text-sm text-gray-500">
-            Hotline: {hotlineNumber} · {businessHours}
-          </p>
-
-          {siteSettings?.hotlineNoticeVi ? (
-            <div className="mt-4 section-card py-6 px-5 text-left">
-              <p className="text-base md:text-lg text-slate-700 whitespace-pre-line leading-relaxed">
-                {siteSettings.hotlineNoticeVi}
-              </p>
-            </div>
-          ) : null}
-        </div>
-      </section>
+      <HeroSection
+        heroTitle={heroTitle}
+        heroSubtitle={heroSubtitle}
+        heroCtaPrimary={heroCtaPrimary}
+        heroCtaSecondary={heroCtaSecondary}
+        heroCtaTertiary={heroCtaTertiary}
+        hotlineNumber={hotlineNumber}
+        hotlineHref={hotlineHref}
+        businessHours={businessHours}
+        zaloUrl={zaloUrl}
+        hotlineNoticeVi={siteSettings?.hotlineNoticeVi}
+      />
 
       {/* ========================= */}
       {/* 장지 티저 섹션 */}

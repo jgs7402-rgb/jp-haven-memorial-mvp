@@ -5,19 +5,12 @@ import { useState } from 'react';
 import ContactModal from '@/components/contact/ContactModal';
 import PartnerInquiryModal from '@/components/contact/PartnerInquiryModal';
 import { SiteHeader } from '@/components/public/SiteHeader';
+import { trackEvent } from '@/src/lib/ga';
 
 type CompanyPageClientProps = {
   hotline: string;
   email: string;
 };
-
-function trackGaEvent(eventName: string) {
-  if (typeof window === 'undefined') return;
-  const w = window as any;
-  if (typeof w.gtag === 'function') {
-    w.gtag('event', eventName);
-  }
-}
 
 export default function CompanyPageClient({
   hotline,
@@ -32,7 +25,7 @@ export default function CompanyPageClient({
 
   const openPartner = () => {
     setIsPartnerOpen(true);
-    trackGaEvent('파트너문의_모달열림');
+    trackEvent('파트너문의_모달열림');
   };
 
   // 🔹 헤더에 표시할 사이트 이름 (비어 있으면 기본값)

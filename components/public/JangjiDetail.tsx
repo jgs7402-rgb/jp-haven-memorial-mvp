@@ -1,11 +1,12 @@
 // components/public/JangjiDetail.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Cemetery } from '@/src/lib/cemeteries';
 import { getJangjiImages } from './jangjiImages';
 import { InquiryForm } from './InquiryForm';
 import Footer from './Footer';
+import { trackEvent } from '@/src/lib/ga';
 
 type Props = {
   cemetery: Cemetery;
@@ -67,6 +68,14 @@ export default function JangjiDetail({ cemetery }: Props) {
     if (activeIndex === null) return;
     setActiveIndex((activeIndex + 1) % allImages.length);
   };
+
+  useEffect(() => {
+    trackEvent('장지상세_페이지뷰', {
+      cemeteryId: cemetery.id,
+      nameVi: cemetery.nameVi,
+      region: cemetery.region,
+    });
+  }, [cemetery.id, cemetery.nameVi, cemetery.region]);
 
   return (
     <article className="space-y-8">

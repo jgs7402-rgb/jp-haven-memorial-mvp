@@ -4,6 +4,8 @@ import { getSiteSettings } from '@/src/lib/siteSettings';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import Footer from '@/components/public/Footer';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Điều khoản sử dụng | JP Haven',
   description: 'Điều khoản sử dụng của JP Haven Memorial',

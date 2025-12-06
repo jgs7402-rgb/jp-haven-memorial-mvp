@@ -2,6 +2,7 @@
 'use client';
 
 import { MouseEvent, FormEvent, useState } from 'react';
+import { trackEvent } from '@/src/lib/ga';
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -71,6 +72,10 @@ export default function ContactModal({
         console.error('[ContactModal] submit error response =', data);
         throw new Error(data?.error ?? data?.message ?? '전송 중 오류가 발생했습니다.');
       }
+
+      trackEvent('문의하기_제출완료', {
+        source,
+      });
 
       console.log('[ContactModal] SUCCESS: contact submitted', data);
       setMessage(data.message ?? 'Thông tin đã được ghi nhận.');

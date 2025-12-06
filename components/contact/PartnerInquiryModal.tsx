@@ -2,6 +2,7 @@
 'use client';
 
 import { MouseEvent, FormEvent, useState } from 'react';
+import { trackEvent } from '@/src/lib/ga';
 
 type PartnerInquiryModalProps = {
   isOpen: boolean;
@@ -9,14 +10,6 @@ type PartnerInquiryModalProps = {
   action?: string; // 기본값: '/api/contact'
   source?: string; // 기본값: 'partner-inquiry-modal'
 };
-
-function trackGaEvent(eventName: string) {
-  if (typeof window === 'undefined') return;
-  const w = window as any;
-  if (typeof w.gtag === 'function') {
-    w.gtag('event', eventName);
-  }
-}
 
 export default function PartnerInquiryModal({
   isOpen,
@@ -90,7 +83,7 @@ export default function PartnerInquiryModal({
     };
 
     try {
-      trackGaEvent('파트너문의_제출시도');
+      trackEvent('파트너문의_제출시도');
 
       const res = await fetch(action, {
         method: 'POST',
@@ -117,7 +110,9 @@ export default function PartnerInquiryModal({
       }
 
       console.log('[PartnerInquiryModal] SUCCESS: partner inquiry submitted', data);
-      trackGaEvent('파트너문의_제출완료');
+      trackEvent('파트너문의_제출완료', {
+        source,
+      });
 
       setMessage(
         data.message ??

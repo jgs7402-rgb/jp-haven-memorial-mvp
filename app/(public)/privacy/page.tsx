@@ -4,6 +4,8 @@ import { getSiteSettings } from '@/src/lib/siteSettings';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import Footer from '@/components/public/Footer';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Chính sách bảo mật | JP Haven',
   description: 'Chính sách bảo mật của JP Haven Memorial',
