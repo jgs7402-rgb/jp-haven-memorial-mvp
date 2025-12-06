@@ -356,6 +356,45 @@ export default function AdminSiteSettingsClient({ initialSettings }: Props) {
         </div>
       </section>
 
+      {/* 약관 및 개인정보 처리방침 */}
+      <section className="space-y-3 rounded-lg border border-slate-200 bg-white p-4">
+        <h2 className="text-lg font-semibold text-slate-900">
+          약관 및 개인정보 처리방침
+        </h2>
+
+        <div className="space-y-1">
+          <label className="block text-xs font-medium text-slate-700">
+            Điều khoản sử dụng (nội dung tiếng Việt)
+          </label>
+          <textarea
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            rows={6}
+            value={form.termsContentVi ?? ''}
+            onChange={(e) => handleChange('termsContentVi', e.target.value)}
+            placeholder="Nhập toàn bộ nội dung điều khoản sử dụng..."
+          />
+          <p className="text-xs text-slate-400">
+            Nếu để trống, website sẽ hiển thị nội dung mặc định trong code.
+          </p>
+        </div>
+
+        <div className="space-y-1">
+          <label className="block text-xs font-medium text-slate-700">
+            Chính sách bảo mật (nội dung tiếng Việt)
+          </label>
+          <textarea
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            rows={6}
+            value={form.privacyContentVi ?? ''}
+            onChange={(e) => handleChange('privacyContentVi', e.target.value)}
+            placeholder="Nhập toàn bộ nội dung chính sách bảo mật..."
+          />
+          <p className="text-xs text-slate-400">
+            Nếu để trống, website sẽ hiển thị nội dung mặc định trong code.
+          </p>
+        </div>
+      </section>
+
       <div className="flex justify-end">
         <button
           type="submit"

@@ -33,6 +33,8 @@ export type SiteSettings = {
   ogDefaultDescriptionVi: string | null;
   ogDefaultImageUrl: string | null;
   ogDefaultImageAltVi: string | null;
+  termsContentVi: string | null;
+  privacyContentVi: string | null;
 };
 
 const siteSettingsColumnMap: Record<keyof Omit<SiteSettings, 'id'>, string> = {
@@ -63,6 +65,8 @@ const siteSettingsColumnMap: Record<keyof Omit<SiteSettings, 'id'>, string> = {
   ogDefaultDescriptionVi: 'og_default_description_vi',
   ogDefaultImageUrl: 'og_default_image_url',
   ogDefaultImageAltVi: 'og_default_image_alt_vi',
+  termsContentVi: 'terms_content_vi',
+  privacyContentVi: 'privacy_content_vi',
 };
 
 function toNullOrString(value: unknown): string | null {
@@ -108,6 +112,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   ogDefaultImageUrl: 'https://example.com/og-default.jpg', // TODO: set to the real OG image URL after uploading the image to production
   ogDefaultImageAltVi:
     'Không gian lưu tro cốt hiện đại, sáng và trang trọng của JP Haven Memorial tại Việt Nam.',
+  termsContentVi: null,
+  privacyContentVi: null,
 };
 
 export function mapRowToSiteSettings(row: Record<string, any>): SiteSettings {
@@ -140,6 +146,8 @@ export function mapRowToSiteSettings(row: Record<string, any>): SiteSettings {
     ogDefaultDescriptionVi: row.og_default_description_vi ?? null,
     ogDefaultImageUrl: row.og_default_image_url ?? null,
     ogDefaultImageAltVi: row.og_default_image_alt_vi ?? null,
+    termsContentVi: row.terms_content_vi ?? null,
+    privacyContentVi: row.privacy_content_vi ?? null,
   };
 }
 

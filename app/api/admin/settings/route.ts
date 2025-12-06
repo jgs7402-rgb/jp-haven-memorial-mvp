@@ -39,6 +39,8 @@ const editableKeys: Array<keyof SiteSettingsPayload> = [
   'ogDefaultDescriptionVi',
   'ogDefaultImageUrl',
   'ogDefaultImageAltVi',
+  'termsContentVi',
+  'privacyContentVi',
 ];
 
 function validatePayload(body: unknown):
