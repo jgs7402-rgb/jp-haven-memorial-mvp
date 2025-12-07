@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/admin/cemeteries":{},"/admin/homepage-images":{},"/admin/inquiries":{},"/admin/jangji":{},"/admin/settings":{},"/jangji":{},"/":{},"/jangji/[id]":{},"/company":{},"/privacy":{},"/terms":{}}}
+{"version":1,"functions":{"/admin/cemeteries":{},"/admin/jangji":{},"/admin/homepage-images":{},"/privacy":{},"/jangji":{},"/admin/settings":{},"/admin/inquiries":{},"/company":{},"/":{},"/jangji/[id]":{},"/terms":{}}}

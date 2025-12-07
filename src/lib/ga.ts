@@ -13,3 +13,4 @@ export function trackEvent(eventName: string, params: Record<string, any> = {}) 
   window.gtag('event', eventName, params);
 }
 
+

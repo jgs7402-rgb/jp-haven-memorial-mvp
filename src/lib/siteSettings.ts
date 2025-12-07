@@ -91,7 +91,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   heroCtaSecondaryVi: 'Để lại thông tin tư vấn',
   heroCtaTertiaryVi: 'Chat qua Zalo',
   footerMessageVi: 'Dịch vụ tư vấn do người Hàn Quốc vận hành',
-  zaloUrl: '#',
+  zaloUrl: 'https://zalo.me/3258467487025854421',
   facebookUrl: '#',
   siteNameVi: 'JP Haven',
   footerMenuTitleVi: 'Menu',

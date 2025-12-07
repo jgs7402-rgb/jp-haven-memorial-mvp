@@ -59,7 +59,7 @@ export default function HeroSection({
 
           {heroCtaTertiary ? (
             <a
-              href={zaloUrl || 'https://zalo.me/3258467487025854421'}
+              href={zaloUrl && zaloUrl !== '#' ? zaloUrl : 'https://zalo.me/3258467487025854421'}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
@@ -87,4 +87,5 @@ export default function HeroSection({
     </section>
   );
 }
+
 

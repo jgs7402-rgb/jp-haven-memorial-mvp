@@ -3,6 +3,8 @@
 import { getSiteSettings, type SiteSettings } from '@/src/lib/siteSettings';
 import CompanyPageClient from './CompanyPageClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Giới thiệu công ty | JP Haven',
   description:
@@ -15,5 +17,9 @@ export default async function CompanyPage() {
   const hotline = settings.hotlineNumber ?? '';
   const email = settings.supportEmail ?? '';
 
-  return <CompanyPageClient hotline={hotline} email={email} />;
+  return (
+    <>
+      <CompanyPageClient hotline={hotline} email={email} />
+    </>
+  );
 }

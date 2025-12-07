@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import type { Cemetery } from '@/src/lib/cemeteries';
 import { getJangjiImages } from './jangjiImages';
 import { InquiryForm } from './InquiryForm';
-import Footer from './Footer';
 import { trackEvent } from '@/src/lib/ga';
 
 type Props = {
@@ -170,11 +169,6 @@ export default function JangjiDetail({ cemetery }: Props) {
         </h2>
         <InquiryForm />
       </section>
-
-      {/* 메인 페이지와 동일한 Footer + 공공기관 딱지 영역 */}
-      <footer className="bg-gray-100 py-10 rounded-2xl px-6">
-        <Footer />
-      </footer>
 
       {/* 이미지 확대 모달 */}
       {activeIndex !== null && allImages[activeIndex] && (

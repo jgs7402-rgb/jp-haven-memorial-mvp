@@ -1,6 +1,7 @@
 // app/(public)/jangji/page.tsx
 import type { Metadata } from 'next';
 import JangjiSection from '@/components/public/JangjiSection';
+import { SiteHeader } from '@/components/public/SiteHeader';
 import { fetchCemeteries } from '@/src/lib/cemeteries';
 import { getSiteSettings } from '@/src/lib/siteSettings';
 
@@ -35,10 +36,14 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function JangjiPage() {
   const cemeteries = await fetchCemeteries();
   const siteSettings = await getSiteSettings();
+  const siteName = siteSettings?.siteNameVi ?? 'JP Haven';
 
   return (
-    <main className="mx-auto max-w-6xl px-4">
-      <JangjiSection cemeteries={cemeteries} siteSettings={siteSettings} />
-    </main>
+    <>
+      <SiteHeader siteName={siteName} />
+      <main className="mx-auto max-w-6xl px-4">
+        <JangjiSection cemeteries={cemeteries} siteSettings={siteSettings} />
+      </main>
+    </>
   );
 }

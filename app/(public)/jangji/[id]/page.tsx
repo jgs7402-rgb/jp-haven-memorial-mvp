@@ -112,14 +112,13 @@ export default async function JangjiDetailPage({ params }: PageProps) {
   const siteName = settings.siteNameVi || 'JP Haven';
 
   return (
-    <main className="mx-auto max-w-6xl px-4">
-      {/* 상단 공통 헤더 (홈과 동일 스타일) */}
+    <>
       <SiteHeader siteName={siteName} />
-
-      {/* 상세 내용 */}
-      <div className="pt-8">
-        <JangjiDetail cemetery={cemetery} />
-      </div>
-    </main>
+      <main className="mx-auto max-w-6xl px-4">
+        <div className="pt-8">
+          <JangjiDetail cemetery={cemetery} />
+        </div>
+      </main>
+    </>
   );
 }

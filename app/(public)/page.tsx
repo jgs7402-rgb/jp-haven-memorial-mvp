@@ -5,13 +5,13 @@ import { getRegionHeroImage } from '@/components/public/jangjiImages';
 import { InquiryForm } from '@/components/public/InquiryForm';
 import { SiteHeader } from '@/components/public/SiteHeader';
 import { TestimonialsCarousel } from '@/components/public/TestimonialsCarousel';
-import Footer from '@/components/public/Footer';
 import HeroSection from '@/components/public/HeroSection';
 import type { Region, Cemetery } from '@/src/lib/cemeteries';
 import { fetchFeaturedCemeteriesForHome } from '@/src/lib/cemeteries';
 import { getSiteSettings } from '@/src/lib/siteSettings';
 import { getHomepageTestimonialsForPublic } from '@/src/lib/homepageTestimonials';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const FALLBACK_TESTIMONIALS = [
@@ -90,7 +90,7 @@ export default async function HomePage() {
   const heroCtaTertiary =
     siteSettings?.heroCtaTertiaryVi ?? 'Chat qua Zalo';
 
-  const zaloUrl = siteSettings?.zaloUrl ?? '#';
+  const zaloUrl = siteSettings?.zaloUrl || 'https://zalo.me/3258467487025854421';
 
   return (
     <main>
@@ -169,11 +169,6 @@ export default async function HomePage() {
 
         <InquiryForm />
       </section>
-
-      {/* ========================= */}
-      {/* 푸터 섹션 */}
-      {/* ========================= */}
-      <Footer settings={siteSettings} />
     </main>
   );
 }

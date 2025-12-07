@@ -15,7 +15,7 @@ export default function Footer({ settings }: FooterProps) {
     settings?.businessHoursText ?? '08:00 – 21:00 (Giờ Việt Nam)';
   const footerMessage =
     settings?.footerMessageVi ?? 'Dịch vụ tư vấn do người Hàn Quốc vận hành';
-  const zaloUrl = settings?.zaloUrl ?? '#';
+  const zaloUrl = settings?.zaloUrl && settings.zaloUrl !== '#' ? settings.zaloUrl : 'https://zalo.me/3258467487025854421';
   const facebookUrl = settings?.facebookUrl ?? '#';
   const siteName = settings?.siteNameVi ?? 'JP Haven';
   const footerCertLabel =
@@ -74,7 +74,9 @@ export default function Footer({ settings }: FooterProps) {
             <ul className="space-y-2">
               <li>
                 <a
-                  href={zaloUrl || '#'}
+                  href={zaloUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => {
                     trackEvent('Zalo상담_클릭', { 위치: 'footer_zalo' });
                   }}

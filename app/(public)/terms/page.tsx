@@ -2,7 +2,6 @@
 
 import { getSiteSettings } from '@/src/lib/siteSettings';
 import { SiteHeader } from '@/components/public/SiteHeader';
-import Footer from '@/components/public/Footer';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,7 +61,6 @@ Nếu bạn có câu hỏi về các điều khoản sử dụng này, vui lòng
           </div>
         </div>
       </main>
-      <Footer settings={settings} />
     </>
   );
 }
