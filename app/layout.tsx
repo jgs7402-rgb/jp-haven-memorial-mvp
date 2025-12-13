@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <head>
+        <meta name="google-site-verification" content="google709ab9074511a275.html" />
         {GA_MEASUREMENT_ID && (
           <>
             {/* GA4 gtag.js 로더 */}
