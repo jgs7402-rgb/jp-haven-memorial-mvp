@@ -1,6 +1,0 @@
-{
-  "/(public)/jangji/page": "app/(public)/jangji/page.js",
-  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js",
-  "/(public)/terms/page": "app/(public)/terms/page.js",
-  "/(public)/page": "app/(public)/page.js"
-}
