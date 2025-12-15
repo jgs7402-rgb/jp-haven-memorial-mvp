@@ -1,5 +1,5 @@
 // src/lib/homepageTestimonials.ts
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { supabaseServer } from '@/src/lib/supabase/server';
 
 export type HomepageTestimonialRow = {
   id: number;
@@ -27,24 +27,6 @@ export type HomepageTestimonialInput = {
   isActive: boolean;
 };
 
-function getAdminClient(): SupabaseClient {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!url || !serviceRoleKey) {
-    throw new Error(
-      '[homepageTestimonials] Supabase env not set (NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)',
-    );
-  }
-
-  return createClient(url, serviceRoleKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
-}
-
 function mapRow(row: HomepageTestimonialRow): HomepageTestimonial {
   return {
     id: row.id,
@@ -58,7 +40,7 @@ function mapRow(row: HomepageTestimonialRow): HomepageTestimonial {
 export async function getHomepageTestimonialsForAdmin(): Promise<
   HomepageTestimonial[]
 > {
-  const supabase = getAdminClient();
+  const supabase = supabaseServer;
   const { data, error } = await supabase
     .from('homepage_testimonials')
     .select('*')
@@ -76,7 +58,7 @@ export async function getHomepageTestimonialsForAdmin(): Promise<
 export async function getHomepageTestimonialsForPublic(): Promise<
   { quote: string; meta: string }[]
 > {
-  const supabase = getAdminClient();
+  const supabase = supabaseServer;
   const { data, error } = await supabase
     .from('homepage_testimonials')
     .select('quote_vi, meta_vi, sort_order, is_active, id')
@@ -98,7 +80,7 @@ export async function getHomepageTestimonialsForPublic(): Promise<
 export async function upsertHomepageTestimonial(
   input: HomepageTestimonialInput,
 ): Promise<HomepageTestimonial> {
-  const supabase = getAdminClient();
+  const supabase = supabaseServer;
 
   const payload = {
     id: input.id ?? undefined,

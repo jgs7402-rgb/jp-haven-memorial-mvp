@@ -4,17 +4,21 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-console.log('DEBUG SUPABASE_URL:', supabaseUrl);
-console.log('DEBUG SUPABASE_KEY:', supabaseKey && supabaseKey.slice(0, 15));
+console.log('[WEB Supabase][DEBUG] NEXT_PUBLIC_SUPABASE_URL =', process.env.NEXT_PUBLIC_SUPABASE_URL);
+console.log('[WEB Supabase][DEBUG] NEXT_PUBLIC_SUPABASE_ANON_KEY length =', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length);
 
-if (!supabaseUrl || !supabaseKey) {
+if (!supabaseUrl || typeof supabaseUrl !== 'string' || !supabaseUrl.startsWith('http')) {
   throw new Error(
-    `Supabase env missing: url=${String(supabaseUrl)}, key=${String(
-      supabaseKey && supabaseKey.slice(0, 5)
-    )}`
+    '[WEB Supabase] NEXT_PUBLIC_SUPABASE_URL 값이 잘못되었습니다. 환경변수 설정을 다시 확인해 주세요.'
   );
 }
 
-export const supabaseClient = createClient(supabaseUrl, supabaseKey);
+if (!supabaseAnonKey || typeof supabaseAnonKey !== 'string') {
+  throw new Error(
+    '[WEB Supabase] NEXT_PUBLIC_SUPABASE_ANON_KEY 값이 없습니다. 환경변수 설정을 다시 확인해 주세요.'
+  );
+}
+
+export const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
