@@ -1250,9 +1250,6 @@ video {
 .pt-1 {
   padding-top: 0.25rem;
 }
-.pt-10 {
-  padding-top: 2.5rem;
-}
 .pt-12 {
   padding-top: 3rem;
 }
@@ -1757,12 +1754,20 @@ body {
     flex-direction: row;
   }
 
+  .sm\:flex-wrap {
+    flex-wrap: wrap;
+  }
+
   .sm\:items-center {
     align-items: center;
   }
 
   .sm\:justify-between {
     justify-content: space-between;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
   }
 
   .sm\:gap-6 {
@@ -1902,8 +1907,8 @@ body {
     padding-bottom: 5rem;
   }
 
-  .md\:pt-12 {
-    padding-top: 3rem;
+  .md\:pt-10 {
+    padding-top: 2.5rem;
   }
 
   .md\:pt-16 {

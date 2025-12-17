@@ -1,8 +1,3 @@
 {
-  "/company/page": "app/company/page.js",
-  "/(public)/terms/page": "app/(public)/terms/page.js",
-  "/(public)/jangji/page": "app/(public)/jangji/page.js",
-  "/(public)/privacy/page": "app/(public)/privacy/page.js",
-  "/(public)/page": "app/(public)/page.js",
-  "/(public)/jangji/[id]/page": "app/(public)/jangji/[id]/page.js"
+  "/(public)/page": "app/(public)/page.js"
 }

@@ -1,1 +1,8 @@
 node_modules
+
+# Next.js build output
+.next/
+
+# Local env (secrets)
+.env*.local
+.env.local

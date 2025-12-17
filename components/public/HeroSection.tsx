@@ -29,12 +29,12 @@ export default function HeroSection({
   hotlineNoticeVi,
 }: HeroSectionProps) {
   return (
-    <section className="container mx-auto pt-10 pb-12 md:pt-12 md:pb-14">
+    <section className="container mx-auto pt-6 pb-12 md:pt-10 md:pb-14">
       <div className="max-w-md md:max-w-2xl mx-auto text-center space-y-6">
         <h1 className="text-4xl font-bold">{heroTitle}</h1>
         <p className="text-lg text-gray-600">{heroSubtitle}</p>
 
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 justify-center">
           {heroCtaPrimary ? (
             <a
               href={hotlineHref}
@@ -42,7 +42,7 @@ export default function HeroSection({
                 trackEvent('전화걸기_클릭', { 위치: 'hero_hotline' });
                 trackEvent('핫라인_클릭', { 위치: 'hero_button' });
               }}
-              className="px-6 py-3 bg-sky-600 text-white rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
+              className="w-full sm:w-auto px-6 py-3 bg-sky-600 text-white rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
             >
               {heroCtaPrimary}
             </a>
@@ -51,7 +51,7 @@ export default function HeroSection({
           {heroCtaSecondary ? (
             <a
               href="#inquiry"
-              className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
+              className="w-full sm:w-auto px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
             >
               {heroCtaSecondary}
             </a>
@@ -65,7 +65,7 @@ export default function HeroSection({
               onClick={() => {
                 trackEvent('Zalo상담_클릭', { 위치: 'hero_zalo' });
               }}
-              className="px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
+              className="w-full sm:w-auto px-6 py-3 bg-white text-sky-600 border border-sky-600 rounded-lg shadow-soft transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-95"
             >
               {heroCtaTertiary}
             </a>
