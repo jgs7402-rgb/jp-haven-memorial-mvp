@@ -6,12 +6,23 @@ import type { Cemetery } from '@/src/lib/cemeteries';
 import { getJangjiImages } from './jangjiImages';
 import { InquiryForm } from './InquiryForm';
 import { trackEvent } from '@/src/lib/ga';
+import CemeteryContactButtons from '@/components/public/CemeteryContactButtons';
 
 type Props = {
   cemetery: Cemetery;
+  hotlineNumber?: string | null;
+  zaloUrl?: string | null;
+  phoneLabel?: string;
+  zaloLabel?: string;
 };
 
-export default function JangjiDetail({ cemetery }: Props) {
+export default function JangjiDetail({
+  cemetery,
+  hotlineNumber,
+  zaloUrl,
+  phoneLabel,
+  zaloLabel,
+}: Props) {
   // 기본 fallback 이미지 (장지 ID 기준 고정 이미지)
   const fallbackImage = getJangjiImages(cemetery.id).main;
   const mapQuery = encodeURIComponent(cemetery.addressVi || cemetery.nameVi);
@@ -161,6 +172,14 @@ export default function JangjiDetail({ cemetery }: Props) {
           />
         </div>
       </section>
+
+      {/* 연락 버튼 (지도 아래 / 문의 위) */}
+      <CemeteryContactButtons
+        phone={hotlineNumber}
+        zaloUrl={zaloUrl}
+        phoneLabel={phoneLabel}
+        zaloLabel={zaloLabel}
+      />
 
       {/* 문의 폼 */}
       <section className="space-y-4">

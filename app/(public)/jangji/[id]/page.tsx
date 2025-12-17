@@ -110,13 +110,22 @@ export default async function JangjiDetailPage({ params }: PageProps) {
   }
 
   const siteName = settings.siteNameVi || 'JP Haven';
+  // 홈페이지 Hero 버튼 라벨과 동일한 fallback 규칙 유지
+  const phoneLabel = settings.heroCtaPrimaryVi ?? 'Gọi tư vấn ngay';
+  const zaloLabel = settings.heroCtaTertiaryVi ?? 'Chat qua Zalo';
 
   return (
     <>
       <SiteHeader siteName={siteName} />
       <main className="mx-auto max-w-6xl px-4">
         <div className="pt-8">
-          <JangjiDetail cemetery={cemetery} />
+          <JangjiDetail
+            cemetery={cemetery}
+            hotlineNumber={settings.hotlineNumber}
+            zaloUrl={settings.zaloUrl}
+            phoneLabel={phoneLabel}
+            zaloLabel={zaloLabel}
+          />
         </div>
       </main>
     </>
