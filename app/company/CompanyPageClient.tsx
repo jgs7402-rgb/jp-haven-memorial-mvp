@@ -45,11 +45,8 @@ export default function CompanyPageClient({
                 Giới thiệu về JP Haven
               </h1>
               <p className="text-sm md:text-base text-slate-700 leading-relaxed">
-                JP Haven Memorial là nền tảng tang lễ số được xây dựng dựa trên
-                kinh nghiệm quản lý tang lễ hơn 20 năm tại Hàn Quốc, kết hợp với
-                thực tế văn hoá tang lễ tại Việt Nam. Chúng tôi mong muốn giúp
-                các gia đình tìm kiếm thông tin nghĩa trang, nhà lưu tro cốt một
-                cách minh bạch, dễ hiểu và nhân văn hơn.
+              JP Haven Memorial là nền tảng tang lễ số, được xây dựng trên hơn 20 năm kinh nghiệm quản lý tang lễ tại Hàn Quốc, kết hợp với sự am hiểu sâu sắc về văn hóa tang lễ tại Việt Nam, để đồng hành cùng các gia đình Việt Nam trong việc tìm kiếm thông tin nghĩa trang và nhà lưu tro cốt một cách minh bạch, rõ ràng và đầy thấu hiểu.
+
               </p>
 
               <div className="flex flex-wrap gap-3 text-sm">
@@ -91,17 +88,11 @@ export default function CompanyPageClient({
                 Tầm nhìn của JP Haven
               </h2>
               <p>
-                Chúng tôi mong muốn xây dựng một nền tảng nơi thông tin về
-                nghĩa trang, hình thức an táng, chi phí và dịch vụ liên quan
-                được trình bày rõ ràng, minh bạch và dễ so sánh, để gia đình có
-                thể đưa ra quyết định trong giai đoạn khó khăn mà không bị áp
-                lực.
+              Chúng tôi hướng tới xây dựng một nền tảng nơi thông tin về nghĩa trang, hình thức an táng, chi phí và các dịch vụ liên quan được trình bày rõ ràng, minh bạch và dễ so sánh, giúp các gia đình đưa ra quyết định trong giai đoạn khó khăn một cách bình tĩnh và không áp lực.
+
               </p>
               <p>
-                Thông qua JP Haven, chúng tôi kết nối giữa gia đình và các đơn
-                vị vận hành nghĩa trang uy tín, với quy trình tư vấn được hỗ
-                trợ bởi đội ngũ có kinh nghiệm thực tế tại cả Hàn Quốc và Việt
-                Nam.
+              Thông qua JP Haven, chúng tôi kết nối các gia đình với những đơn vị vận hành nghĩa trang uy tín, cùng quy trình tư vấn được hỗ trợ bởi đội ngũ giàu kinh nghiệm thực tế tại cả Hàn Quốc và Việt Nam, nhằm mang lại sự an tâm và tin cậy trong từng lựa chọn
               </p>
             </div>
             <div className="space-y-3 text-sm md:text-base text-slate-700">

@@ -117,7 +117,7 @@ export default async function HomePage() {
       {/* 장지 티저 섹션 */}
       {/* ========================= */}
       <section className="container mx-auto py-12 mt-0 md:mt-2">
-        <h2 className="text-2xl font-bold mb-6">Nghĩa trang nổi bật</h2>
+        <h2 className="text-2xl font-bold mb-6">Nghĩa trang tiêu biểu</h2>
         <FeaturedCemeteries cemeteries={featuredCemeteries} />
         <div className="text-center">
           <a
